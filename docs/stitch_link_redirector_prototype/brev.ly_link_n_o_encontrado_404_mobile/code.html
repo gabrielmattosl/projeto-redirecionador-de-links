@@ -1,0 +1,127 @@
+<!DOCTYPE html><html lang="pt-BR" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Link não encontrado - brev.ly</title>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              bg: '#E2E6EE',
+              card: '#FFFFFF',
+              dark: '#1F2025',
+              subtext: '#555964',
+              blue: '#2046A8',
+              accentRed: '#E53E3E',
+            }
+          }
+        }
+      }
+    }
+  </script>
+<!-- Custom styles for the stylized glitch 404 effect -->
+<style data-purpose="glitch-typography">
+    .glitch-text {
+      position: relative;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      color: #1E3A8A;
+      display: inline-block;
+      user-select: none;
+    }
+
+    /* Base layered slices */
+    .glitch-text::before,
+    .glitch-text::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Red glitch offset slice */
+    .glitch-text::before {
+      color: #E11D48;
+      clip-path: polygon(
+        0 18%, 100% 18%, 100% 24%, 0 24%,
+        0 46%, 100% 46%, 100% 52%, 0 52%,
+        0 78%, 100% 78%, 100% 84%, 0 84%
+      );
+      transform: translate(3.5px, -1px);
+      z-index: 1;
+    }
+
+    /* Blue glitch offset slice */
+    .glitch-text::after {
+      color: #2563EB;
+      clip-path: polygon(
+        0 26%, 100% 26%, 100% 32%, 0 32%,
+        0 58%, 100% 58%, 100% 64%, 0 64%,
+        0 86%, 100% 86%, 100% 92%, 0 92%
+      );
+      transform: translate(-3.5px, 1px);
+      z-index: 2;
+    }
+  </style>
+</head>
+<body class="bg-[#E2E6EE] min-h-screen flex items-center justify-center p-4 antialiased font-sans" style="height: 844px; min-height: 844px; max-height: 844px; box-sizing: border-box; overflow-y: auto; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.5rem 1rem;">
+<!-- BEGIN: ErrorCardContainer -->
+<main class="w-full max-w-[350px] sm:max-w-[360px]" data-purpose="404-container">
+<!-- Centered White Card -->
+<div class="bg-white rounded-[20px] shadow-[0_4px_24px_rgba(0,0,0,0.03)] px-6 py-10 sm:px-8 sm:py-12 text-center" data-purpose="error-card">
+<!-- BEGIN: Stylized 404 Graphic -->
+<div class="relative flex items-center justify-center mb-6 overflow-hidden py-2" data-purpose="glitch-display">
+<!-- Horizontal decorative glitch scanlines in background -->
+<div aria-hidden="true" class="absolute inset-0 pointer-events-none flex flex-col justify-around opacity-90 py-1">
+<!-- Top horizontal glitch lines -->
+<div class="w-14 h-[2.5px] bg-[#1E3A8A] self-start ml-2 transform translate-y-1"></div>
+<div class="w-20 h-[2.5px] bg-[#E11D48] self-end mr-3"></div>
+<div class="w-10 h-[2px] bg-[#2563EB] self-center -translate-x-12"></div>
+<!-- Middle horizontal glitch lines -->
+<div class="w-16 h-[2px] bg-[#2563EB] self-start ml-1"></div>
+<div class="w-12 h-[2.5px] bg-[#E11D48] self-end mr-1"></div>
+<div class="w-8 h-[2px] bg-[#1E3A8A] self-center translate-x-14"></div>
+<!-- Bottom horizontal glitch lines -->
+<div class="w-12 h-[2.5px] bg-[#1E3A8A] self-start ml-4"></div>
+<div class="w-16 h-[2.5px] bg-[#E11D48] self-end mr-5"></div>
+</div>
+<!-- 404 Primary Stylized Text -->
+<h1 aria-label="Erro 404" class="glitch-text text-[68px] sm:text-[74px] leading-none tracking-tight font-black relative z-10" data-text="404">
+          404
+        </h1>
+</div>
+<!-- END: Stylized 404 Graphic -->
+<!-- BEGIN: Content Section -->
+<section data-purpose="message-content">
+<!-- Title -->
+<h2 class="text-[#1F2025] font-extrabold text-[21px] leading-tight mb-3">
+          Link não encontrado
+        </h2>
+<!-- Description with Link -->
+<p class="text-[#555964] text-[13.5px] sm:text-[14px] leading-[1.5] font-normal px-1">
+          O link que você está tentando acessar não existe, foi removido ou é uma URL inválida. Saiba mais em 
+          <a class="text-[#2046A8] hover:underline font-medium inline-block" href="https://brev.ly" rel="noopener noreferrer" target="_blank">
+            brev.ly
+          </a>.
+        </p>
+</section>
+<!-- END: Content Section -->
+</div>
+</main>
+<!-- END: ErrorCardContainer -->
+
+
+</body></html>

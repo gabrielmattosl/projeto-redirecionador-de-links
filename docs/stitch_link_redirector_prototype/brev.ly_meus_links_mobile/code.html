@@ -1,0 +1,222 @@
+<!DOCTYPE html><html lang="pt-BR" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>brev.ly - Meus Links</title>
+<!-- Google Fonts: Open Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              DEFAULT: '#2B47B3',
+              dark: '#213894',
+              light: '#E8ECF8'
+            },
+            canvas: '#E2E5EB',
+            ink: {
+              main: '#1A1C20',
+              muted: '#717684',
+              sub: '#8E94A4'
+            },
+            stroke: {
+              DEFAULT: '#E1E4EA',
+              button: '#D7DAE2'
+            },
+            surface: {
+              card: '#FFFFFF',
+              btn: '#E4E7EE'
+            }
+          },
+          fontFamily: {
+            sans: ['"Open Sans"', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+<style data-purpose="custom-typography">
+    body {
+      font-family: 'Open Sans', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+  </style>
+</head>
+<body class="bg-canvas min-h-screen text-ink-main flex flex-col items-center py-6 px-4" style="height: 844px; min-height: 844px; max-height: 844px; box-sizing: border-box; overflow-y: auto; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 2rem 1rem;">
+<!-- Container for Mobile Width Limit (approx 390px) -->
+<div class="w-full max-w-[390px] flex flex-col gap-4">
+<!-- BEGIN: BrandHeader -->
+<header class="flex items-center justify-center gap-2 pt-2 pb-2" data-purpose="app-header">
+<!-- brev.ly Interlinked Rings Icon -->
+<svg class="w-7 h-7 text-brand" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 32 32">
+<path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0-4.24 1.76l-1.42 1.42A6 6 0 0 0 12 18z"></path>
+<path d="M20 14a6 6 0 1 0 0 12 6 6 0 0 0 4.24-1.76l1.42-1.42A6 6 0 0 0 20 14z"></path>
+</svg>
+<span class="text-2xl font-bold tracking-tight text-brand">brev.ly</span>
+</header>
+<!-- END: BrandHeader -->
+<!-- BEGIN: CreateLinkCard -->
+<section class="bg-surface-card rounded-xl p-5 shadow-sm border border-black/[0.02]" data-purpose="novo-link-card">
+<h2 class="text-xl font-bold text-ink-main mb-4">Novo link</h2>
+<form class="flex flex-col gap-4" onsubmit="event.preventDefault();">
+<!-- Original Link Input -->
+<div class="flex flex-col gap-1.5">
+<label class="text-[11px] font-bold tracking-wider text-ink-muted uppercase" for="link-original">
+            LINK ORIGINAL
+          </label>
+<input class="w-full rounded-lg border border-stroke text-sm px-3.5 py-2.5 text-ink-main placeholder-ink-sub focus:border-brand focus:ring-1 focus:ring-brand outline-none transition-colors" id="link-original" placeholder="www.exemplo.com.br" type="url">
+</div>
+<!-- Shortened Link Input -->
+<div class="flex flex-col gap-1.5">
+<label class="text-[11px] font-bold tracking-wider text-ink-muted uppercase" for="link-encurtado">
+            LINK ENCURTADO
+          </label>
+<input class="w-full rounded-lg border border-stroke text-sm px-3.5 py-2.5 text-ink-muted placeholder-ink-sub focus:border-brand focus:ring-1 focus:ring-brand outline-none transition-colors" id="link-encurtado" type="text" value="brev.ly/">
+</div>
+<!-- Submit Button -->
+<button class="w-full mt-1 bg-brand hover:bg-brand-dark active:scale-[0.99] text-white font-semibold py-3 px-4 rounded-lg text-sm transition shadow-sm cursor-pointer" type="button">
+          Salvar link
+        </button>
+</form>
+</section>
+<!-- END: CreateLinkCard -->
+<!-- BEGIN: LinkListCard -->
+<section class="bg-surface-card rounded-xl p-5 shadow-sm border border-black/[0.02]" data-purpose="meus-links-card">
+<!-- Header row inside card -->
+<div class="flex items-center justify-between pb-3 border-b border-stroke">
+<h2 class="text-lg font-bold text-ink-main">Meus links</h2>
+<!-- CSV Export Button -->
+<button class="inline-flex items-center gap-1.5 bg-surface-btn hover:bg-stroke text-ink-main text-xs font-semibold px-2.5 py-1.5 rounded-md border border-stroke-button transition" type="button">
+<!-- Download Icon -->
+<svg class="w-3.5 h-3.5 text-ink-main" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+          Baixar CSV
+        </button>
+</div>
+<!-- Links List Items -->
+<div class="divide-y divide-stroke">
+<!-- Item 1: Portfolio-Dev -->
+<div class="py-3 flex items-center justify-between gap-2" data-purpose="link-item">
+<div class="min-w-0 flex-1 pr-2">
+<a class="text-sm font-semibold text-brand hover:underline block truncate" href="#">
+              brev.ly/Portfolio-Dev
+            </a>
+<p class="text-xs text-ink-muted truncate mt-0.5">
+              devsite.portfolio.com.br/d...
+            </p>
+</div>
+<div class="flex items-center gap-2 shrink-0">
+<span class="text-xs text-ink-muted whitespace-nowrap">30 acessos</span>
+<!-- Copy button -->
+<button class="w-8 h-8 rounded-md bg-surface-btn hover:bg-stroke text-ink-main flex items-center justify-center transition border border-stroke-button/40" title="Copiar link">
+<svg class="w-3.5 h-3.5 text-ink-main" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+<rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect>
+<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+</svg>
+</button>
+<!-- Delete button -->
+<button class="w-8 h-8 rounded-md bg-surface-btn hover:bg-stroke text-ink-main flex items-center justify-center transition border border-stroke-button/40" title="Excluir link">
+<svg class="w-3.5 h-3.5 text-ink-main" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+<polyline points="3 6 5 6 21 6"></polyline>
+<path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+</svg>
+</button>
+</div>
+</div>
+<!-- Item 2: Linkedin-Profi... -->
+<div class="py-3 flex items-center justify-between gap-2" data-purpose="link-item">
+<div class="min-w-0 flex-1 pr-2">
+<a class="text-sm font-semibold text-brand hover:underline block truncate" href="#">
+              brev.ly/Linkedin-Profi...
+            </a>
+<p class="text-xs text-ink-muted truncate mt-0.5">
+              linkedin.com/in/myprofile
+            </p>
+</div>
+<div class="flex items-center gap-2 shrink-0">
+<span class="text-xs text-ink-muted whitespace-nowrap">15 acessos</span>
+<!-- Copy button -->
+<button class="w-8 h-8 rounded-md bg-surface-btn hover:bg-stroke text-ink-main flex items-center justify-center transition border border-stroke-button/40" title="Copiar link">
+<svg class="w-3.5 h-3.5 text-ink-main" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+<rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect>
+<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+</svg>
+</button>
+<!-- Delete button -->
+<button class="w-8 h-8 rounded-md bg-surface-btn hover:bg-stroke text-ink-main flex items-center justify-center transition border border-stroke-button/40" title="Excluir link">
+<svg class="w-3.5 h-3.5 text-ink-main" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+<polyline points="3 6 5 6 21 6"></polyline>
+<path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+</svg>
+</button>
+</div>
+</div>
+<!-- Item 3: Github-Project -->
+<div class="py-3 flex items-center justify-between gap-2" data-purpose="link-item">
+<div class="min-w-0 flex-1 pr-2">
+<a class="text-sm font-semibold text-brand hover:underline block truncate" href="#">
+              brev.ly/Github-Project
+            </a>
+<p class="text-xs text-ink-muted truncate mt-0.5">
+              github.com/devname/proj...
+            </p>
+</div>
+<div class="flex items-center gap-2 shrink-0">
+<span class="text-xs text-ink-muted whitespace-nowrap">34 acessos</span>
+<!-- Copy button -->
+<button class="w-8 h-8 rounded-md bg-surface-btn hover:bg-stroke text-ink-main flex items-center justify-center transition border border-stroke-button/40" title="Copiar link">
+<svg class="w-3.5 h-3.5 text-ink-main" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+<rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect>
+<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+</svg>
+</button>
+<!-- Delete button -->
+<button class="w-8 h-8 rounded-md bg-surface-btn hover:bg-stroke text-ink-main flex items-center justify-center transition border border-stroke-button/40" title="Excluir link">
+<svg class="w-3.5 h-3.5 text-ink-main" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+<polyline points="3 6 5 6 21 6"></polyline>
+<path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+</svg>
+</button>
+</div>
+</div>
+<!-- Item 4: Figma-Encurt... -->
+<div class="py-3 flex items-center justify-between gap-2" data-purpose="link-item">
+<div class="min-w-0 flex-1 pr-2">
+<a class="text-sm font-semibold text-brand hover:underline block truncate" href="#">
+              brev.ly/Figma-Encurt...
+            </a>
+<p class="text-xs text-ink-muted truncate mt-0.5">
+              figma.com/design/file/Enc...
+            </p>
+</div>
+<div class="flex items-center gap-2 shrink-0">
+<span class="text-xs text-ink-muted whitespace-nowrap">53 acessos</span>
+<!-- Copy button -->
+<button class="w-8 h-8 rounded-md bg-surface-btn hover:bg-stroke text-ink-main flex items-center justify-center transition border border-stroke-button/40" title="Copiar link">
+<svg class="w-3.5 h-3.5 text-ink-main" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+<rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect>
+<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+</svg>
+</button>
+<!-- Delete button -->
+<button class="w-8 h-8 rounded-md bg-surface-btn hover:bg-stroke text-ink-main flex items-center justify-center transition border border-stroke-button/40" title="Excluir link">
+<svg class="w-3.5 h-3.5 text-ink-main" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+<polyline points="3 6 5 6 21 6"></polyline>
+<path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+</svg>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- END: LinkListCard -->
+</div>
+
+
+</body></html>

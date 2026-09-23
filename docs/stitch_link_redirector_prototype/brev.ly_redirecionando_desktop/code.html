@@ -1,0 +1,65 @@
+<!DOCTYPE html><html lang="pt-BR"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Redirecionando...</title>
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              blue: '#2c46b1',
+              hover: '#203588'
+            },
+            page: '#e5e9f2'
+          },
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+<!-- Custom Styles for Typography & Exact Palette -->
+<style data-purpose="custom-styling">
+    body {
+      background-color: #dbe0eb;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+  </style>
+</head>
+<body class="min-h-screen w-full flex items-center justify-center p-4 antialiased text-gray-900 selection:bg-indigo-100 selection:text-indigo-700" style="height: 720px; min-height: 720px; max-height: 720px; overflow: hidden;">
+<!-- BEGIN: RedirectCardContainer -->
+<main class="w-full max-w-[580px] bg-white rounded-lg shadow-sm px-8 py-16 sm:py-20 flex flex-col items-center justify-center text-center transition-all duration-300" data-purpose="redirect-card">
+<!-- Card Icon: Interlocking Loops / Chain Link -->
+<div class="mb-6 flex items-center justify-center text-brand-blue" data-purpose="icon-wrapper">
+<svg aria-hidden="true" class="w-11 h-11 text-[#2c46b1]" fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<!-- Interlocking ring 1 -->
+<path d="M20 16H15C10.5817 16 7 19.5817 7 24C7 28.4183 10.5817 32 15 32H20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.75"></path>
+<!-- Interlocking ring 2 -->
+<path d="M28 32H33C37.4183 32 41 28.4183 41 24C41 19.5817 37.4183 16 33 16H28" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.75"></path>
+<!-- Intersecting bridge connection -->
+<path d="M17 24H31" stroke="currentColor" stroke-linecap="round" stroke-width="3.75"></path>
+</svg>
+</div>
+<!-- Status Heading -->
+<h1 class="text-2xl sm:text-[26px] font-bold text-gray-900 tracking-tight mb-4">
+      Redirecionando...
+    </h1>
+<!-- Explanatory Details & Fallback Link -->
+<div class="text-[14px] sm:text-[15px] leading-relaxed text-gray-600 max-w-[420px]">
+<p class="mb-1">
+        O link será aberto automaticamente em alguns instantes.
+      </p>
+<p class="">
+        Não foi redirecionado? 
+        <a class="text-[#2c46b1] underline font-medium hover:text-[#203588] transition-colors inline-block" href="#">Acesse aqui</a>
+</p>
+</div>
+</main>
+<!-- END: RedirectCardContainer -->
+
+
+</body></html>

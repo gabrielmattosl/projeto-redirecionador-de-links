@@ -1,0 +1,101 @@
+<!DOCTYPE html><html lang="pt-BR"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Link não encontrado - 404</title>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              bg: '#E2E6EC',
+              card: '#FFFFFF',
+              dark: '#1C2024',
+              blue: '#20419A',
+              red: '#CE2C31',
+              link: '#2563EB',
+              muted: '#60646C'
+            }
+          }
+        }
+      }
+    }
+  </script>
+<!-- Glitch styling for the 404 number display -->
+<style data-purpose="typography-glitch">
+    .glitch-text {
+      position: relative;
+      display: inline-block;
+      font-weight: 900;
+      color: #1F3A8A;
+      letter-spacing: -0.05em;
+      user-select: none;
+    }
+    
+    /* Red-tinted pseudo element layer shifted */
+    .glitch-text::before {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: -2px;
+      width: 100%;
+      height: 100%;
+      color: #D32F2F;
+      clip-path: polygon(0 18%, 100% 18%, 100% 28%, 0 28%, 0 45%, 100% 45%, 100% 52%, 0 52%, 0 74%, 100% 74%, 100% 84%, 0 84%);
+      opacity: 0.95;
+    }
+
+    /* Blue slice accents */
+    .glitch-text::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 3px;
+      width: 100%;
+      height: 100%;
+      color: #1D4ED8;
+      clip-path: polygon(0 32%, 100% 32%, 100% 40%, 0 40%, 0 60%, 100% 60%, 100% 68%, 0 68%, 0 90%, 100% 90%, 100% 98%, 0 98%);
+      opacity: 0.95;
+    }
+  </style>
+</head>
+<body class="bg-[#E2E6EC] min-h-screen flex items-center justify-center p-4 font-sans antialiased selection:bg-blue-100 selection:text-blue-900" style="height: 720px; min-height: 720px; max-height: 720px; overflow: hidden;">
+<!-- BEGIN: MainContent -->
+<main class="w-full max-w-[580px] bg-white rounded-lg shadow-sm px-8 py-16 sm:px-14 sm:py-20 flex flex-col items-center justify-center text-center" data-purpose="error-card">
+<!-- 404 Numeric Glitch Graphic -->
+<div class="relative mb-6 select-none flex items-center justify-center" data-purpose="status-code">
+<!-- Horizontal glitch accent slices -->
+<span class="absolute -left-5 top-5 w-7 h-[3px] bg-[#1D4ED8] rounded-sm pointer-events-none"></span>
+<span class="absolute -left-7 top-10 w-9 h-[3px] bg-[#1D4ED8] rounded-sm pointer-events-none"></span>
+<span class="absolute -left-3 top-14 w-6 h-[2.5px] bg-[#1D4ED8] rounded-sm pointer-events-none"></span>
+<span class="absolute left-6 top-8 w-8 h-[2px] bg-[#D32F2F] rounded-sm pointer-events-none z-10"></span>
+<span class="absolute right-5 top-11 w-9 h-[2.5px] bg-[#D32F2F] rounded-sm pointer-events-none z-10"></span>
+<span class="absolute -right-5 top-4 w-7 h-[3px] bg-[#1D4ED8] rounded-sm pointer-events-none"></span>
+<span class="absolute -right-7 top-13 w-8 h-[3px] bg-[#1D4ED8] rounded-sm pointer-events-none"></span>
+<!-- Core 404 Glitch Text -->
+<h1 class="glitch-text text-6xl sm:text-7xl font-extrabold tracking-tight" data-text="404">
+        404
+      </h1>
+</div>
+<!-- Error Title -->
+<h2 class="text-xl sm:text-2xl font-bold text-[#1C2024] tracking-tight mb-4" data-purpose="error-heading">
+      Link não encontrado
+    </h2>
+<!-- Error Description and Support Link -->
+<p class="text-sm sm:text-base text-[#60646C] leading-relaxed max-w-[460px] mx-auto" data-purpose="error-description">
+      O link que você está tentando acessar não existe, foi removido ou é uma URL inválida. Saiba mais em <a class="text-[#2563EB] hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-sm" href="https://brev.ly" rel="noopener noreferrer" target="_blank">brev.ly</a>.
+    </p>
+</main>
+<!-- END: MainContent -->
+
+
+</body></html>

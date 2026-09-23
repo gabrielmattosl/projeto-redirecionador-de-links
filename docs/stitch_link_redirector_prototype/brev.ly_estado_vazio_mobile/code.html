@@ -1,0 +1,126 @@
+<!DOCTYPE html><html lang="pt-BR"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+<title>brev.ly - Encurtador de Links</title>
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Custom Configuration -->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              primary: '#2B4AC5', // Navy/Royal Blue logo color
+              button: '#8B9DD5',  // Disabled/soft blue state for "Salvar link"
+              buttonHover: '#7C8FC7',
+            },
+            surface: {
+              background: '#E9ECF2',
+              card: '#FFFFFF',
+              border: '#DFE2EB',
+              placeholder: '#9AA0B2',
+              label: '#72788D',
+              divider: '#EEF0F5',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style data-purpose="custom-overrides">
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+  </style>
+</head>
+<body class="bg-[#E9ECF2] min-h-screen text-[#222634] flex flex-col items-center" style="height: 844px; min-height: 844px; max-height: 844px; box-sizing: border-box; overflow-y: auto; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 2rem 1rem;">
+<!-- Mobile Viewport Container (iOS 390px scale target) -->
+<div class="w-full max-w-[390px] flex flex-col">
+<!-- BEGIN: BrandHeader -->
+<header class="flex justify-center items-center gap-2 mb-7" data-purpose="brand-logo">
+<!-- Brev.ly Brand Icon (Double Interlocking Rings) -->
+<svg class="w-8 h-8 text-[#2B4AC5]" fill="none" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+<path d="M11.5 21C8.46243 21 6 18.5376 6 15.5C6 12.4624 8.46243 10 11.5 10H16C17.6569 10 19 11.3431 19 13C19 14.6569 17.6569 16 16 16H12" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.75"></path>
+<path d="M20.5 11C23.5376 11 26 13.4624 26 16.5C26 19.5376 23.5376 22 20.5 22H16C14.3431 22 13 20.6569 13 19C13 17.3431 14.3431 16 16 16H20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.75"></path>
+</svg>
+<!-- Brand Wordmark -->
+<span class="text-[25px] font-bold tracking-tight text-[#2B4AC5] select-none leading-none">brev.ly</span>
+</header>
+<!-- END: BrandHeader -->
+<!-- BEGIN: MainContent -->
+<main class="flex flex-col gap-4 flex-1">
+<!-- BEGIN: CreateLinkCard -->
+<section class="bg-white rounded-[18px] p-6 shadow-sm border border-black/[0.02]" data-purpose="form-create-link">
+<h1 class="text-[19px] font-bold text-[#1F2430] mb-5 tracking-tight">Novo link</h1>
+<form action="#" class="flex flex-col gap-4" method="POST" onsubmit="event.preventDefault();">
+<!-- Input 1: Link Original -->
+<div>
+<label class="block text-[11px] font-medium text-[#72788D] uppercase tracking-wider mb-2" for="original-url">
+              LINK ORIGINAL
+            </label>
+<input class="w-full h-12 px-4 rounded-xl border border-[#DFE2EB] bg-white text-[14px] text-[#222634] placeholder-[#8E95A8] focus:border-[#2B4AC5] focus:ring-1 focus:ring-[#2B4AC5] outline-none transition" id="original-url" name="original_url" placeholder="www.exemplo.com.br" type="text">
+</div>
+<!-- Input 2: Link Encurtado -->
+<div>
+<label class="block text-[11px] font-medium text-[#72788D] uppercase tracking-wider mb-2" for="short-slug">
+              LINK ENCURTADO
+            </label>
+<input class="w-full h-12 px-4 rounded-xl border border-[#DFE2EB] bg-white text-[14px] text-[#222634] placeholder-[#8E95A8] focus:border-[#2B4AC5] focus:ring-1 focus:ring-[#2B4AC5] outline-none transition" id="short-slug" name="short_slug" placeholder="brev.ly/" type="text">
+</div>
+<!-- Submit Button -->
+<div class="pt-1">
+<button class="w-full h-12 bg-[#8B9DD5] hover:bg-[#7C8FC7] active:scale-[0.99] text-white font-medium text-[15px] rounded-xl flex items-center justify-center transition-all duration-150 shadow-sm" data-purpose="save-link-button" type="submit">
+              Salvar link
+            </button>
+</div>
+</form>
+</section>
+<!-- END: CreateLinkCard -->
+<!-- BEGIN: MyLinksCard -->
+<section class="bg-white rounded-[18px] p-6 shadow-sm border border-black/[0.02] flex flex-col flex-1 min-h-[268px]" data-purpose="list-user-links">
+<!-- Header: Title and Download CSV Button -->
+<div class="flex items-center justify-between pb-5 border-b border-[#F0F2F6]">
+<h2 class="text-[19px] font-bold text-[#1F2430] tracking-tight">Meus links</h2>
+<!-- Download CSV Button -->
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#EEF1F6] hover:bg-[#E5E8EF] text-[#7A8094] text-[12px] font-medium rounded-lg transition" data-purpose="export-csv-button" type="button">
+<!-- Tray Download Icon -->
+<svg class="w-3.5 h-3.5 text-[#7A8094]" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+<polyline points="7 10 12 15 17 10"></polyline>
+<line x1="12" x2="12" y1="15" y2="3"></line>
+</svg>
+<span class="">Baixar CSV</span>
+</button>
+</div>
+<!-- Empty State Container -->
+<div class="flex-1 flex flex-col items-center justify-center py-10 px-4 text-center" data-purpose="links-empty-state">
+<!-- Phosphor / Material style Link Outline Icon -->
+<div class="mb-4 text-[#7A8094]">
+<svg class="w-8 h-8 rotate-[-45deg]" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewBox="0 0 24 24">
+<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+<path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+</svg>
+</div>
+<!-- Empty State Message -->
+<p class="text-[11px] font-medium tracking-[0.06em] text-[#7A8094] uppercase select-none">
+            AINDA NÃO EXISTEM LINKS CADASTRADOS
+          </p>
+</div>
+</section>
+<!-- END: MyLinksCard -->
+</main>
+<!-- END: MainContent -->
+</div>
+
+
+</body></html>

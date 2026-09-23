@@ -1,0 +1,567 @@
+<!DOCTYPE html><html lang="pt-BR"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>brev.ly - Encurtador de Links</title>
+<!-- Google Fonts: Open Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS CDN with plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Open Sans"', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              blue: '#2C46B1',
+              'blue-dark': '#2C4091',
+              'blue-disabled': '#8B9ADB',
+              danger: '#B12C4D',
+            },
+            neutral: {
+              white: '#FFFFFF',
+              gray100: '#F9F9FB',
+              gray200: '#E4E6EC',
+              gray300: '#CDCED5',
+              gray400: '#74798B',
+              gray500: '#4D505C',
+              gray600: '#1F2025',
+              bg: '#E2E6EE'
+            }
+          },
+          fontSize: {
+            'text-xs': ['10px', { lineHeight: '14px' }],
+            'text-sm': ['12px', { lineHeight: '16px' }],
+            'text-md': ['14px', { lineHeight: '18px' }],
+            'text-lg': ['18px', { lineHeight: '24px' }],
+            'text-xl': ['24px', { lineHeight: '32px' }],
+          }
+        }
+      }
+    }
+  </script>
+<style data-purpose="custom-scroll-and-animations">
+    /* Toast transition */
+    .toast-enter {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    .toast-show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body class="bg-[#E2E6EE] text-neutral-gray600 font-sans min-h-screen flex flex-col justify-center items-center p-4 sm:p-8 antialiased select-none" style="height: 720px; min-height: 720px; max-height: 720px; overflow: hidden;">
+<!-- BEGIN: AppContainer -->
+<div class="w-full max-w-[1040px] flex flex-col gap-6" data-purpose="main-layout-wrapper">
+<!-- BEGIN: BrandLogoHeader -->
+<header class="flex items-center gap-2" data-purpose="brand-logo">
+<!-- Custom SVG Brev.ly linked rings icon -->
+<svg class="w-7 h-7 text-brand-blue flex-shrink-0" fill="none" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+<path d="M11.5 8C8.46243 8 6 10.4624 6 13.5C6 16.5376 8.46243 19 11.5 19H14V16H11.5C10.1193 16 9 14.8807 9 13.5C9 12.1193 10.1193 11 11.5 11H14V8H11.5Z" fill="currentColor"></path>
+<path d="M20.5 13H18V16H20.5C21.8807 16 23 17.1193 23 18.5C23 19.8807 21.8807 21 20.5 21H18V24H20.5C23.5376 24 26 21.5376 26 18.5C26 15.4624 23.5376 13 20.5 13Z" fill="currentColor"></path>
+<path d="M12 17.5C12 16.6716 12.6716 16 13.5 16H18.5C19.3284 16 20 16.6716 20 17.5C20 18.3284 19.3284 19 18.5 19H13.5C12.6716 19 12 18.3284 12 17.5Z" fill="currentColor" fill-opacity="0.3"></path>
+</svg>
+<span class="text-xl font-bold tracking-tight text-brand-blue">brev.ly</span>
+</header>
+<!-- END: BrandLogoHeader -->
+<!-- BEGIN: MainContentSection -->
+<main class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+<!-- BEGIN: CreateLinkForm -->
+<section class="md:col-span-5 bg-white rounded-2xl p-6 sm:p-7 shadow-[0_4px_24px_rgba(0,0,0,0.03)] border border-neutral-gray200/60" data-purpose="create-link-card">
+<h2 class="text-text-xl font-bold text-neutral-gray600 mb-5">Novo link</h2>
+<form class="space-y-4" id="new-link-form" onsubmit="event.preventDefault(); handleAddLink();">
+<!-- Input 1: Original Link -->
+<div class="space-y-1.5">
+<label class="block text-text-xs font-semibold uppercase tracking-wider text-neutral-gray400" for="original-url-input">
+              Link Original
+            </label>
+<input class="w-full h-11 px-3.5 text-text-md rounded-lg border border-neutral-gray300 text-neutral-gray600 placeholder-neutral-gray400/70 focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-colors" id="original-url-input" placeholder="ex: linkedin.com/in/myprofile" required="" type="text" value="linkedin.com/in/myprofile">
+<p class="hidden text-text-sm text-brand-danger flex items-center gap-1 mt-1" id="original-url-error">
+<svg class="w-3.5 h-3.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path clip-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" fill-rule="evenodd"></path></svg>
+              Insira um link original válido
+            </p>
+</div>
+<!-- Input 2: Shortened Link Code -->
+<div class="space-y-1.5">
+<label class="block text-text-xs font-semibold uppercase tracking-wider text-neutral-gray400" for="short-code-input">
+              Link Encurtado
+            </label>
+<div class="relative flex items-center">
+<span class="absolute left-3.5 text-text-md text-neutral-gray400 pointer-events-none select-none">brev.ly/</span>
+<input class="w-full h-11 pl-16 pr-3.5 text-text-md rounded-lg border border-neutral-gray300 text-neutral-gray600 placeholder-neutral-gray400/70 focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-colors" id="short-code-input" placeholder="slug-customizado" required="" type="text" value="Linkedin-Profile">
+</div>
+<p class="hidden text-text-sm text-brand-danger flex items-center gap-1 mt-1" id="short-code-error">
+<svg class="w-3.5 h-3.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path clip-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" fill-rule="evenodd"></path></svg>
+              Este link encurtado já está em uso
+            </p>
+</div>
+<!-- Action Button -->
+<button class="w-full h-11 mt-2 bg-brand-blue hover:bg-brand-blue-dark active:scale-[0.99] text-white text-text-md font-semibold rounded-lg transition-all flex items-center justify-center gap-2 shadow-sm" id="btn-submit" type="submit">
+<span class="">Salvar link</span>
+</button>
+</form>
+</section>
+<!-- END: CreateLinkForm -->
+<!-- BEGIN: MyLinksContainer -->
+<section class="md:col-span-7 bg-white rounded-2xl p-6 sm:p-7 shadow-[0_4px_24px_rgba(0,0,0,0.03)] border border-neutral-gray200/60 min-h-[380px] flex flex-col justify-between" data-purpose="link-list-card">
+<div>
+<!-- Header: Title & Export CSV -->
+<div class="flex items-center justify-between pb-4 border-b border-neutral-gray200">
+<h2 class="text-text-xl font-bold text-neutral-gray600">Meus links</h2>
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 text-text-sm font-semibold text-neutral-gray500 hover:text-neutral-gray600 bg-neutral-gray100 hover:bg-neutral-gray200 border border-neutral-gray200 rounded-lg transition-colors" onclick="downloadCSV()" title="Baixar lista em CSV" type="button">
+<!-- Download Phosphor/Heroicon SVG -->
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+              Baixar CSV
+            </button>
+</div>
+<!-- Links List Body -->
+<div class="divide-y divide-neutral-gray200" data-purpose="rendered-links" id="links-container"><div class="py-3.5 flex items-center justify-between gap-4 group transition-colors" data-link-id="1">
+          <!-- Link details -->
+          <div class="flex-1 min-w-0 pr-2">
+            <button type="button" onclick="triggerRedirectDemo('brev.ly/Portfolio-Dev')" class="text-left font-bold text-brand-blue hover:underline text-text-md truncate block" title="Abrir brev.ly/Portfolio-Dev">
+              brev.ly/Portfolio-Dev
+            </button>
+            <p class="text-text-sm text-neutral-gray400 truncate mt-0.5" title="devsite.portfolio.com.br/devname-123456">
+              devsite.portfolio.com.br/devname-123456
+            </p>
+          </div>
+
+          <!-- Counter & Actions -->
+          <div class="flex items-center gap-3.5 flex-shrink-0">
+            <span class="text-text-sm text-neutral-gray400 whitespace-nowrap">
+              30 acessos
+            </span>
+
+            <!-- Copy Action -->
+            <button type="button" onclick="copyToClipboard('brev.ly/Portfolio-Dev')" class="w-8 h-8 rounded-lg bg-neutral-gray100 hover:bg-neutral-gray200 text-neutral-gray500 flex items-center justify-center transition-colors focus:ring-1 focus:ring-brand-blue" title="Copiar link encurtado">
+              <!-- Phosphor Copy Icon -->
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M216,32H88a8,8,0,0,0-8,8V80H40a8,8,0,0,0-8,8V216a8,8,0,0,0,8,8H168a8,8,0,0,0,8-8V176h40a8,8,0,0,0,8-8V40A8,8,0,0,0,216,32ZM160,208H48V96H160Zm48-48H176V88a8,8,0,0,0-8-8H96V48H208Z"></path>
+              </svg>
+            </button>
+
+            <!-- Delete Action -->
+            <button type="button" onclick="deleteLink('1')" class="w-8 h-8 rounded-lg bg-neutral-gray100 hover:bg-red-50 text-neutral-gray500 hover:text-brand-danger flex items-center justify-center transition-colors focus:ring-1 focus:ring-brand-danger" title="Excluir link">
+              <!-- Phosphor Trash Icon -->
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192ZM112,104v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Z"></path>
+              </svg>
+            </button>
+          </div>
+        </div><div class="py-3.5 flex items-center justify-between gap-4 group transition-colors" data-link-id="2">
+          <!-- Link details -->
+          <div class="flex-1 min-w-0 pr-2">
+            <button type="button" onclick="triggerRedirectDemo('brev.ly/Linkedin-Profile')" class="text-left font-bold text-brand-blue hover:underline text-text-md truncate block" title="Abrir brev.ly/Linkedin-Profile">
+              brev.ly/Linkedin-Profile
+            </button>
+            <p class="text-text-sm text-neutral-gray400 truncate mt-0.5" title="linkedin.com/in/myprofile">
+              linkedin.com/in/myprofile
+            </p>
+          </div>
+
+          <!-- Counter & Actions -->
+          <div class="flex items-center gap-3.5 flex-shrink-0">
+            <span class="text-text-sm text-neutral-gray400 whitespace-nowrap">
+              15 acessos
+            </span>
+
+            <!-- Copy Action -->
+            <button type="button" onclick="copyToClipboard('brev.ly/Linkedin-Profile')" class="w-8 h-8 rounded-lg bg-neutral-gray100 hover:bg-neutral-gray200 text-neutral-gray500 flex items-center justify-center transition-colors focus:ring-1 focus:ring-brand-blue" title="Copiar link encurtado">
+              <!-- Phosphor Copy Icon -->
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M216,32H88a8,8,0,0,0-8,8V80H40a8,8,0,0,0-8,8V216a8,8,0,0,0,8,8H168a8,8,0,0,0,8-8V176h40a8,8,0,0,0,8-8V40A8,8,0,0,0,216,32ZM160,208H48V96H160Zm48-48H176V88a8,8,0,0,0-8-8H96V48H208Z"></path>
+              </svg>
+            </button>
+
+            <!-- Delete Action -->
+            <button type="button" onclick="deleteLink('2')" class="w-8 h-8 rounded-lg bg-neutral-gray100 hover:bg-red-50 text-neutral-gray500 hover:text-brand-danger flex items-center justify-center transition-colors focus:ring-1 focus:ring-brand-danger" title="Excluir link">
+              <!-- Phosphor Trash Icon -->
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192ZM112,104v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Z"></path>
+              </svg>
+            </button>
+          </div>
+        </div><div class="py-3.5 flex items-center justify-between gap-4 group transition-colors" data-link-id="3">
+          <!-- Link details -->
+          <div class="flex-1 min-w-0 pr-2">
+            <button type="button" onclick="triggerRedirectDemo('brev.ly/Github-Project')" class="text-left font-bold text-brand-blue hover:underline text-text-md truncate block" title="Abrir brev.ly/Github-Project">
+              brev.ly/Github-Project
+            </button>
+            <p class="text-text-sm text-neutral-gray400 truncate mt-0.5" title="github.com/devname/project-name-v2">
+              github.com/devname/project-name-v2
+            </p>
+          </div>
+
+          <!-- Counter & Actions -->
+          <div class="flex items-center gap-3.5 flex-shrink-0">
+            <span class="text-text-sm text-neutral-gray400 whitespace-nowrap">
+              34 acessos
+            </span>
+
+            <!-- Copy Action -->
+            <button type="button" onclick="copyToClipboard('brev.ly/Github-Project')" class="w-8 h-8 rounded-lg bg-neutral-gray100 hover:bg-neutral-gray200 text-neutral-gray500 flex items-center justify-center transition-colors focus:ring-1 focus:ring-brand-blue" title="Copiar link encurtado">
+              <!-- Phosphor Copy Icon -->
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M216,32H88a8,8,0,0,0-8,8V80H40a8,8,0,0,0-8,8V216a8,8,0,0,0,8,8H168a8,8,0,0,0,8-8V176h40a8,8,0,0,0,8-8V40A8,8,0,0,0,216,32ZM160,208H48V96H160Zm48-48H176V88a8,8,0,0,0-8-8H96V48H208Z"></path>
+              </svg>
+            </button>
+
+            <!-- Delete Action -->
+            <button type="button" onclick="deleteLink('3')" class="w-8 h-8 rounded-lg bg-neutral-gray100 hover:bg-red-50 text-neutral-gray500 hover:text-brand-danger flex items-center justify-center transition-colors focus:ring-1 focus:ring-brand-danger" title="Excluir link">
+              <!-- Phosphor Trash Icon -->
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192ZM112,104v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Z"></path>
+              </svg>
+            </button>
+          </div>
+        </div><div class="py-3.5 flex items-center justify-between gap-4 group transition-colors" data-link-id="4">
+          <!-- Link details -->
+          <div class="flex-1 min-w-0 pr-2">
+            <button type="button" onclick="triggerRedirectDemo('brev.ly/Figma-Encurtador-de-Links')" class="text-left font-bold text-brand-blue hover:underline text-text-md truncate block" title="Abrir brev.ly/Figma-Encurtador-de-Links">
+              brev.ly/Figma-Encurtador-de-Links
+            </button>
+            <p class="text-text-sm text-neutral-gray400 truncate mt-0.5" title="figma.com/design/file/Encurtador-de-Links">
+              figma.com/design/file/Encurtador-de-Links
+            </p>
+          </div>
+
+          <!-- Counter & Actions -->
+          <div class="flex items-center gap-3.5 flex-shrink-0">
+            <span class="text-text-sm text-neutral-gray400 whitespace-nowrap">
+              53 acessos
+            </span>
+
+            <!-- Copy Action -->
+            <button type="button" onclick="copyToClipboard('brev.ly/Figma-Encurtador-de-Links')" class="w-8 h-8 rounded-lg bg-neutral-gray100 hover:bg-neutral-gray200 text-neutral-gray500 flex items-center justify-center transition-colors focus:ring-1 focus:ring-brand-blue" title="Copiar link encurtado">
+              <!-- Phosphor Copy Icon -->
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M216,32H88a8,8,0,0,0-8,8V80H40a8,8,0,0,0-8,8V216a8,8,0,0,0,8,8H168a8,8,0,0,0,8-8V176h40a8,8,0,0,0,8-8V40A8,8,0,0,0,216,32ZM160,208H48V96H160Zm48-48H176V88a8,8,0,0,0-8-8H96V48H208Z"></path>
+              </svg>
+            </button>
+
+            <!-- Delete Action -->
+            <button type="button" onclick="deleteLink('4')" class="w-8 h-8 rounded-lg bg-neutral-gray100 hover:bg-red-50 text-neutral-gray500 hover:text-brand-danger flex items-center justify-center transition-colors focus:ring-1 focus:ring-brand-danger" title="Excluir link">
+              <!-- Phosphor Trash Icon -->
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192ZM112,104v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Z"></path>
+              </svg>
+            </button>
+          </div>
+        </div></div>
+<!-- Empty State (Hidden when items exist) -->
+<div class="hidden flex-col items-center justify-center py-16 text-center" id="empty-state-view">
+<div class="w-12 h-12 rounded-full bg-neutral-gray100 flex items-center justify-center text-neutral-gray400 mb-3">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+<path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<h3 class="text-text-md font-semibold text-neutral-gray600">Ainda não existem links cadastrados</h3>
+<p class="text-text-sm text-neutral-gray400 mt-1 max-w-xs">Preencha o formulário ao lado para encurtar seu primeiro link.</p>
+</div>
+</div>
+<!-- Links Counter Footer -->
+<footer class="pt-4 border-t border-neutral-gray200/70 text-right">
+<span class="text-text-xs text-neutral-gray400 font-medium" id="total-count-text">4 links encurtados</span>
+</footer>
+</section>
+<!-- END: MyLinksContainer -->
+</main>
+<!-- END: MainContentSection -->
+<!-- BEGIN: DemoStateSwitcher -->
+<!-- Helper bar to demonstrate different screen flows (Default, Redirecting, 404 Modal) -->
+<!-- END: DemoStateSwitcher -->
+</div>
+<!-- END: AppContainer -->
+<!-- BEGIN: FeedbackToast -->
+<div class="fixed bottom-6 right-6 z-50 bg-neutral-gray600 text-white text-text-sm px-4 py-2.5 rounded-lg shadow-lg flex items-center gap-2 transform transition-all duration-300 pointer-events-none opacity-0 translate-y-4" id="toast-notification">
+<svg class="w-4 h-4 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+<path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd"></path>
+</svg>
+<span id="toast-message" class="">Link copiado com sucesso!</span>
+</div>
+<!-- END: FeedbackToast -->
+<!-- BEGIN: RedirectModalSimulation -->
+<div class="fixed inset-0 bg-neutral-gray600/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4" id="redirect-modal">
+<div class="bg-white rounded-2xl p-8 max-w-sm w-full text-center shadow-2xl flex flex-col items-center">
+<div class="w-12 h-12 rounded-full bg-brand-blue/10 flex items-center justify-center text-brand-blue mb-4 animate-spin">
+<svg class="w-6 h-6" fill="none" viewBox="0 0 24 24">
+<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+<path class="opacity-75" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" fill="currentColor"></path>
+</svg>
+</div>
+<h3 class="text-text-lg font-bold text-neutral-gray600">Redirecionando...</h3>
+<p class="text-text-sm text-neutral-gray400 mt-1 mb-6" id="redirect-modal-slug">brev.ly/Linkedin-Profile</p>
+<button class="w-full py-2 bg-neutral-gray100 hover:bg-neutral-gray200 text-neutral-gray500 rounded-lg text-text-sm font-semibold transition-colors" onclick="closeRedirectDemo()">
+        Cancelar
+      </button>
+</div>
+</div>
+<!-- END: RedirectModalSimulation -->
+<!-- BEGIN: Error404ModalSimulation -->
+<div class="fixed inset-0 bg-neutral-gray600/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4" id="modal-404">
+<div class="bg-white rounded-2xl p-8 max-w-md w-full text-center shadow-2xl flex flex-col items-center">
+<div class="flex items-center justify-center text-brand-blue font-bold text-5xl mb-3 tracking-tighter gap-1">
+<span class="">4</span>
+<svg class="w-10 h-10 text-brand-blue" fill="none" viewBox="0 0 32 32">
+<circle cx="16" cy="16" r="12" stroke="currentColor" stroke-dasharray="4 2" stroke-width="4"></circle>
+</svg>
+<span class="">4</span>
+</div>
+<h3 class="text-text-lg font-bold text-neutral-gray600">Link não encontrado</h3>
+<p class="text-text-sm text-neutral-gray400 mt-2 mb-6">O link que você está tentando acessar foi removido ou nunca existiu.</p>
+<button class="px-6 py-2.5 bg-brand-blue hover:bg-brand-blue-dark text-white rounded-lg text-text-sm font-semibold transition-colors" onclick="close404Demo()">
+        Voltar à página inicial
+      </button>
+</div>
+</div>
+<!-- END: Error404ModalSimulation -->
+<!-- BEGIN: LogicScript -->
+<script data-purpose="link-management-logic">
+    // Mock Data matching the original screenshot and requirements
+    const initialLinks = [
+      {
+        id: '1',
+        slug: 'Portfolio-Dev',
+        targetUrl: 'devsite.portfolio.com.br/devname-123456',
+        clicks: 30
+      },
+      {
+        id: '2',
+        slug: 'Linkedin-Profile',
+        targetUrl: 'linkedin.com/in/myprofile',
+        clicks: 15
+      },
+      {
+        id: '3',
+        slug: 'Github-Project',
+        targetUrl: 'github.com/devname/project-name-v2',
+        clicks: 34
+      },
+      {
+        id: '4',
+        slug: 'Figma-Encurtador-de-Links',
+        targetUrl: 'figma.com/design/file/Encurtador-de-Links',
+        clicks: 53
+      }
+    ];
+
+    let linksList = [...initialLinks];
+
+    // DOM Elements
+    const linksContainer = document.getElementById('links-container');
+    const emptyStateView = document.getElementById('empty-state-view');
+    const totalCountText = document.getElementById('total-count-text');
+    const originalInput = document.getElementById('original-url-input');
+    const shortCodeInput = document.getElementById('short-code-input');
+    const toast = document.getElementById('toast-notification');
+    const toastMessage = document.getElementById('toast-message');
+
+    // Render list into container
+    function renderLinks() {
+      linksContainer.innerHTML = '';
+
+      if (linksList.length === 0) {
+        emptyStateView.classList.remove('hidden');
+        emptyStateView.classList.add('flex');
+        totalCountText.textContent = '0 links encurtados';
+        return;
+      }
+
+      emptyStateView.classList.add('hidden');
+      emptyStateView.classList.remove('flex');
+      totalCountText.textContent = `${linksList.length} ${linksList.length === 1 ? 'link encurtado' : 'links encurtados'}`;
+
+      linksList.forEach(item => {
+        const itemRow = document.createElement('div');
+        itemRow.className = 'py-3.5 flex items-center justify-between gap-4 group transition-colors';
+        itemRow.setAttribute('data-link-id', item.id);
+
+        itemRow.innerHTML = `
+          <!-- Link details -->
+          <div class="flex-1 min-w-0 pr-2">
+            <button 
+              type="button" 
+              onclick="triggerRedirectDemo('brev.ly/${item.slug}')" 
+              class="text-left font-bold text-brand-blue hover:underline text-text-md truncate block"
+              title="Abrir brev.ly/${item.slug}"
+            >
+              brev.ly/${item.slug}
+            </button>
+            <p class="text-text-sm text-neutral-gray400 truncate mt-0.5" title="${item.targetUrl}">
+              ${item.targetUrl}
+            </p>
+          </div>
+
+          <!-- Counter & Actions -->
+          <div class="flex items-center gap-3.5 flex-shrink-0">
+            <span class="text-text-sm text-neutral-gray400 whitespace-nowrap">
+              ${item.clicks} acessos
+            </span>
+
+            <!-- Copy Action -->
+            <button 
+              type="button" 
+              onclick="copyToClipboard('brev.ly/${item.slug}')"
+              class="w-8 h-8 rounded-lg bg-neutral-gray100 hover:bg-neutral-gray200 text-neutral-gray500 flex items-center justify-center transition-colors focus:ring-1 focus:ring-brand-blue"
+              title="Copiar link encurtado"
+            >
+              <!-- Phosphor Copy Icon -->
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M216,32H88a8,8,0,0,0-8,8V80H40a8,8,0,0,0-8,8V216a8,8,0,0,0,8,8H168a8,8,0,0,0,8-8V176h40a8,8,0,0,0,8-8V40A8,8,0,0,0,216,32ZM160,208H48V96H160Zm48-48H176V88a8,8,0,0,0-8-8H96V48H208Z"/>
+              </svg>
+            </button>
+
+            <!-- Delete Action -->
+            <button 
+              type="button" 
+              onclick="deleteLink('${item.id}')"
+              class="w-8 h-8 rounded-lg bg-neutral-gray100 hover:bg-red-50 text-neutral-gray500 hover:text-brand-danger flex items-center justify-center transition-colors focus:ring-1 focus:ring-brand-danger"
+              title="Excluir link"
+            >
+              <!-- Phosphor Trash Icon -->
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192ZM112,104v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Z"/>
+              </svg>
+            </button>
+          </div>
+        `;
+        linksContainer.appendChild(itemRow);
+      });
+    }
+
+    // Add new link handler
+    function handleAddLink() {
+      const originalVal = originalInput.value.trim();
+      let shortVal = shortCodeInput.value.trim().replace(/^brev\.ly\//i, '');
+
+      if (!originalVal) return;
+
+      if (!shortVal) {
+        shortVal = Math.random().toString(36).substring(2, 7);
+      }
+
+      // Check duplicates
+      const exists = linksList.some(item => item.slug.toLowerCase() === shortVal.toLowerCase());
+      if (exists) {
+        document.getElementById('short-code-error').classList.remove('hidden');
+        return;
+      }
+      document.getElementById('short-code-error').classList.add('hidden');
+
+      const newEntry = {
+        id: Date.now().toString(),
+        slug: shortVal,
+        targetUrl: originalVal,
+        clicks: 0
+      };
+
+      linksList.unshift(newEntry);
+      renderLinks();
+
+      // Reset Form fields
+      originalInput.value = '';
+      shortCodeInput.value = '';
+      showToast('Link encurtado salvo com sucesso!');
+    }
+
+    // Delete link handler
+    function deleteLink(id) {
+      linksList = linksList.filter(item => item.id !== id);
+      renderLinks();
+      showToast('Link excluído com sucesso');
+    }
+
+    // Copy to clipboard helper
+    function copyToClipboard(text) {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text);
+      }
+      showToast(`Copiado: ${text}`);
+    }
+
+    // Toast banner trigger
+    let toastTimeout;
+    function showToast(msg) {
+      toastMessage.textContent = msg;
+      toast.classList.remove('opacity-0', 'translate-y-4');
+      toast.classList.add('opacity-100', 'translate-y-0');
+
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-4');
+        toast.classList.remove('opacity-100', 'translate-y-0');
+      }, 2500);
+    }
+
+    // Export list to CSV
+    function downloadCSV() {
+      if (linksList.length === 0) {
+        showToast('Não há links para exportar.');
+        return;
+      }
+
+      let csvContent = "data:text/csv;charset=utf-8,";
+      csvContent += "Link Encurtado,Link Original,Acessos\n";
+
+      linksList.forEach(row => {
+        csvContent += `brev.ly/${row.slug},"${row.targetUrl}",${row.clicks}\n`;
+      });
+
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", "brevly_meus_links.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast('Arquivo CSV baixado!');
+    }
+
+    // UI Demo Switches
+    function resetData(fillInputs = false) {
+      linksList = [...initialLinks];
+      renderLinks();
+      if (fillInputs) {
+        originalInput.value = 'linkedin.com/in/myprofile';
+        shortCodeInput.value = 'Linkedin-Profile';
+      }
+    }
+
+    function setEmptyState() {
+      linksList = [];
+      renderLinks();
+    }
+
+    function triggerRedirectDemo(slug) {
+      document.getElementById('redirect-modal-slug').textContent = slug;
+      document.getElementById('redirect-modal').classList.remove('hidden');
+    }
+
+    function closeRedirectDemo() {
+      document.getElementById('redirect-modal').classList.add('hidden');
+    }
+
+    function trigger404Demo() {
+      document.getElementById('modal-404').classList.remove('hidden');
+    }
+
+    function close404Demo() {
+      document.getElementById('modal-404').classList.add('hidden');
+    }
+
+    // Initial render
+    renderLinks();
+  </script>
+<!-- END: LogicScript -->
+
+
+</body></html>

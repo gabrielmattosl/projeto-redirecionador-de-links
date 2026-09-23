@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>brev.ly - Encurtador de Links</title>
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              base: '#2C46B1',
+              dark: '#2C4091',
+              disabled: '#8D9DD7',
+            },
+            danger: '#B12C4D',
+            neutral: {
+              white: '#FFFFFF',
+              100: '#F9F9FB',
+              200: '#E4E6EC',
+              300: '#CDCFD5',
+              400: '#74798B',
+              500: '#4D505C',
+              600: '#1F2025',
+            }
+          },
+          fontFamily: {
+            sans: ['"Open Sans"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+<!-- Google Fonts: Open Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<style data-purpose="custom-typography">
+    body {
+      font-family: 'Open Sans', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background-color: #E6E8EF;
+    }
+  </style>
+<style data-purpose="glitch-effect">
+    /* 404 Glitch Effect matching Style Guide vector */
+    .glitch-404 {
+      position: relative;
+      font-size: 56px;
+      font-weight: 700;
+      line-height: 1;
+      color: #2C46B1;
+      letter-spacing: 2px;
+      display: inline-block;
+    }
+    .glitch-404::before,
+    .glitch-404::after {
+      content: "404";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .glitch-404::before {
+      color: #B12C4D;
+      z-index: -1;
+      clip-path: polygon(0 20%, 100% 20%, 100% 30%, 0 30%, 0 50%, 100% 50%, 100% 60%, 0 60%, 0 80%, 100% 80%, 100% 90%, 0 90%);
+      transform: translate(-3px, 0);
+    }
+    .glitch-404::after {
+      color: #2C46B1;
+      z-index: -2;
+      clip-path: polygon(0 0%, 100% 0%, 100% 15%, 0 15%, 0 35%, 100% 35%, 100% 45%, 0 45%, 0 65%, 100% 65%, 100% 75%, 0 75%);
+      transform: translate(3px, 1px);
+    }
+  </style>
+</head>
+<body class="min-h-screen text-neutral-600 flex flex-col items-center justify-start p-0 m-0 select-none pb-28">
+<!-- BEGIN: MobileDeviceContainer -->
+<!-- Constrained exactly to 390px mobile format -->
+<div class="w-full max-w-[390px] min-h-screen flex flex-col relative px-4 pt-8 pb-10" id="app-container">
+<!-- BEGIN: MainHeader -->
+<header class="flex items-center justify-center gap-2 mb-6" data-purpose="app-branding">
+<!-- Brev.ly Brand Icon (Double loop links) -->
+<svg class="w-7 h-7 text-brand-base flex-shrink-0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" viewbox="0 0 32 32">
+<path d="M12 11c-2.76 0-5 2.24-5 5s2.24 5 5 5h3c2.76 0 5-2.24 5-5"></path>
+<path d="M20 21c2.76 0 5-2.24 5-5s-2.24-5-5-5h-3c-2.76 0-5 2.24-5 5"></path>
+</svg>
+<span class="text-[22px] font-bold tracking-tight text-brand-base">brev.ly</span>
+</header>
+<!-- END: MainHeader -->
+<!-- BEGIN: MainContent -->
+<main class="flex flex-col gap-4 w-full" id="main-screens-view">
+<!-- BEGIN: CardNovoLink -->
+<section class="bg-white rounded-xl p-6 shadow-sm border border-neutral-200/60" data-purpose="create-link-card">
+<h2 class="text-lg font-bold text-neutral-600 mb-5">Novo link</h2>
+<form class="space-y-4" id="form-new-link" onsubmit="handleCreateLink(event)">
+<!-- Original URL Input Field -->
+<div class="space-y-1.5">
+<label class="block text-[10px] font-semibold tracking-wider uppercase text-neutral-400" for="input-original-url">
+              Link Original
+            </label>
+<input class="w-full h-11 px-3.5 text-sm rounded-lg border border-neutral-300 text-neutral-600 placeholder-neutral-400 focus:outline-none focus:ring-1 focus:ring-brand-base focus:border-brand-base transition-colors" id="input-original-url" placeholder="www.exemplo.com.br" required="" type="text"/>
+</div>
+<!-- Shortened Custom Slug Input Field -->
+<div class="space-y-1.5">
+<label class="block text-[10px] font-semibold tracking-wider uppercase text-neutral-400" for="input-short-url">
+              Link Encurtado
+            </label>
+<div class="relative flex items-center">
+<input class="w-full h-11 px-3.5 text-sm rounded-lg border border-neutral-300 text-neutral-600 placeholder-neutral-400 focus:outline-none focus:ring-1 focus:ring-brand-base focus:border-brand-base transition-colors" id="input-short-url" placeholder="brev.ly/" required="" type="text" value="brev.ly/"/>
+</div>
+</div>
+<!-- Submit Button -->
+<button class="w-full h-11 bg-brand-base hover:bg-brand-dark active:scale-[0.99] text-white text-sm font-semibold rounded-lg flex items-center justify-center transition-all duration-150 shadow-sm mt-2" id="btn-save-link" type="submit">
+            Salvar link
+          </button>
+</form>
+</section>
+<!-- END: CardNovoLink -->
+<!-- BEGIN: CardMeusLinks -->
+<section class="bg-white rounded-xl p-6 shadow-sm border border-neutral-200/60 flex flex-col min-h-[300px]" data-purpose="list-links-card">
+<!-- Card Header -->
+<div class="flex items-center justify-between pb-4 border-b border-neutral-200/80">
+<h2 class="text-lg font-bold text-neutral-600">Meus links</h2>
+<!-- Baixar CSV Button -->
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-neutral-200/70 hover:bg-neutral-200 text-neutral-500 hover:text-neutral-600 text-xs font-semibold transition-colors" onclick="handleDownloadCSV()" title="Exportar CSV" type="button">
+<!-- Phosphor Download Icon -->
+<svg class="w-3.5 h-3.5" fill="currentColor" viewbox="0 0 256 256">
+<path d="M216,144v64a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V144a8,8,0,0,1,16,0v56H200V144a8,8,0,0,1,16,0Zm-82.34,13.66a8,8,0,0,0,11.32,0l40-40a8,8,0,0,0-11.32-11.32L144,132.69V32a8,8,0,0,0-16,0V132.69L98.66,106.34a8,8,0,0,0-11.32,11.32Z"></path>
+</svg>
+<span>Baixar CSV</span>
+</button>
+</div>
+<!-- Links Container -->
+<div class="divide-y divide-neutral-200/80 mt-1" id="links-container">
+<!-- Dynamically populated via JS -->
+</div>
+<!-- Empty State Container (Hidden when items exist) -->
+<div class="hidden flex-col items-center justify-center flex-1 py-12 text-center" id="empty-state-view">
+<!-- Phosphor Link Simple Icon -->
+<div class="text-neutral-400 mb-3">
+<svg class="w-7 h-7 mx-auto" fill="currentColor" viewbox="0 0 256 256">
+<path d="M136.37,187.66a8,8,0,0,1,0,11.31l-36.68,36.69a60,60,0,0,1-84.86-84.86l36.69-36.68a60,60,0,0,1,84.85,0,8,8,0,1,1-11.31,11.31,44,44,0,0,0-62.23,0L26.14,162.12a44,44,0,1,0,62.23,62.23l36.69-36.69A8,8,0,0,1,136.37,187.66Zm93.49-161.52a60,60,0,0,0-84.86,0L108.31,62.83a8,8,0,1,0,11.32,11.31l36.68-36.68a44,44,0,1,1,62.23,62.23l-36.69,36.69a44,44,0,0,1-62.23,0,8,8,0,0,0-11.31,11.31,60,60,0,0,0,84.85,0l36.69-36.68A60,60,0,0,0,229.86,26.14Z"></path>
+</svg>
+</div>
+<p class="text-[10px] font-semibold uppercase tracking-wider text-neutral-400 max-w-[200px] leading-relaxed">
+            Ainda não existem links cadastrados
+          </p>
+</div>
+</section>
+<!-- END: CardMeusLinks -->
+</main>
+<!-- END: MainContent -->
+<!-- BEGIN: ScreenRedirect -->
+<!-- Screen: Redirecionando... Modal / Simulated Page -->
+<div class="hidden flex-col items-center justify-center min-h-[70vh] w-full" data-purpose="redirect-view" id="screen-redirect">
+<div class="w-full bg-white rounded-2xl p-8 py-12 text-center shadow-sm border border-neutral-200/60 flex flex-col items-center">
+<!-- Brev.ly Brand Icon animated -->
+<div class="mb-6 animate-pulse text-brand-base">
+<svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" viewbox="0 0 32 32">
+<path d="M12 11c-2.76 0-5 2.24-5 5s2.24 5 5 5h3c2.76 0 5-2.24 5-5"></path>
+<path d="M20 21c2.76 0 5-2.24 5-5s-2.24-5-5-5h-3c-2.76 0-5 2.24-5 5"></path>
+</svg>
+</div>
+<h1 class="text-xl font-bold text-neutral-600 mb-4">Redirecionando...</h1>
+<p class="text-xs text-neutral-500 max-w-[260px] leading-relaxed mb-3">
+          O link será aberto automaticamente em alguns instantes.
+        </p>
+<p class="text-xs text-neutral-500">
+          Não foi redirecionado? 
+          <a class="text-brand-base font-semibold underline hover:text-brand-dark" href="javascript:void(0)" onclick="switchView('links')">Acesse aqui</a>
+</p>
+</div>
+</div>
+<!-- END: ScreenRedirect -->
+<!-- BEGIN: Screen404 -->
+<!-- Screen: 404 Link não encontrado -->
+<div class="hidden flex-col items-center justify-center min-h-[70vh] w-full" data-purpose="not-found-view" id="screen-404">
+<div class="w-full bg-white rounded-2xl p-8 py-12 text-center shadow-sm border border-neutral-200/60 flex flex-col items-center">
+<!-- Glitch 404 text -->
+<div class="mb-5 mt-2">
+<span class="glitch-404">404</span>
+</div>
+<h1 class="text-xl font-bold text-neutral-600 mb-4">Link não encontrado</h1>
+<p class="text-xs text-neutral-500 max-w-[250px] leading-relaxed mb-1">
+          O link que você está tentando acessar não existe, foi removido ou é uma URL inválida.
+        </p>
+<p class="text-xs text-neutral-500">
+          Saiba mais em <a class="text-brand-base font-semibold underline hover:text-brand-dark" href="javascript:void(0)" onclick="switchView('links')">brev.ly</a>.
+        </p>
+</div>
+</div>
+<!-- END: Screen404 -->
+<!-- Toast Notification -->
+<div class="fixed top-5 left-1/2 -translate-x-1/2 bg-neutral-600 text-white text-xs font-semibold px-4 py-2.5 rounded-lg shadow-lg flex items-center gap-2 opacity-0 pointer-events-none transition-all duration-200 z-50" id="toast">
+<svg class="w-4 h-4 text-white" fill="currentColor" viewbox="0 0 256 256">
+<path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path>
+</svg>
+<span id="toast-message">Copiado com sucesso!</span>
+</div>
+</div>
+<!-- END: MobileDeviceContainer -->
+<!-- BEGIN: StateSwitcherToolbar -->
+<!-- Fixed bottom controller to easily toggle snapshot states per requirements -->
+<aside class="fixed bottom-3 left-1/2 -translate-x-1/2 bg-white/95 backdrop-blur-md border border-neutral-300 px-2 py-1.5 rounded-full shadow-lg z-50 flex items-center gap-1 text-[11px] font-semibold text-neutral-500" data-purpose="preview-state-switcher">
+<span class="px-2 text-[10px] uppercase text-neutral-400 hidden sm:inline">Visualizar:</span>
+<button class="px-2.5 py-1 rounded-full bg-brand-base text-white transition-colors" id="btn-state-links" onclick="switchView('links')">Com Dados</button>
+<button class="px-2.5 py-1 rounded-full hover:bg-neutral-200/70 text-neutral-600 transition-colors" id="btn-state-empty" onclick="switchView('empty')">Vazia</button>
+<button class="px-2.5 py-1 rounded-full hover:bg-neutral-200/70 text-neutral-600 transition-colors" id="btn-state-redirect" onclick="switchView('redirect')">Redirecionando</button>
+<button class="px-2.5 py-1 rounded-full hover:bg-neutral-200/70 text-neutral-600 transition-colors" id="btn-state-404" onclick="switchView('404')">404</button>
+</aside>
+<!-- END: StateSwitcherToolbar -->
+<!-- JavaScript logic -->
+<script data-purpose="data-and-state-management">
+    // Mock initial links directly matching Links-Mobile.png
+    let initialLinks = [
+      {
+        id: '1',
+        shortUrl: 'brev.ly/Portfolio-Dev',
+        originalUrl: 'devsite.portfolio.com.br/d...',
+        clicks: 30
+      },
+      {
+        id: '2',
+        shortUrl: 'brev.ly/Linkedin-Profi...',
+        originalUrl: 'linkedin.com/in/myprofile',
+        clicks: 15
+      },
+      {
+        id: '3',
+        shortUrl: 'brev.ly/Github-Project',
+        originalUrl: 'github.com/devname/proj...',
+        clicks: 34
+      },
+      {
+        id: '4',
+        shortUrl: 'brev.ly/Figma-Encurt...',
+        originalUrl: 'figma.com/design/file/Enc...',
+        clicks: 53
+      }
+    ];
+
+    let currentLinks = [...initialLinks];
+    let currentActiveView = 'links'; // 'links', 'empty', 'redirect', '404'
+
+    // Render links list or empty placeholder
+    function renderList() {
+      const container = document.getElementById('links-container');
+      const emptyState = document.getElementById('empty-state-view');
+
+      if (!container || !emptyState) return;
+
+      if (currentLinks.length === 0) {
+        container.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        emptyState.classList.add('flex');
+        return;
+      }
+
+      emptyState.classList.add('hidden');
+      emptyState.classList.remove('flex');
+
+      container.innerHTML = currentLinks.map(link => `
+        <div class="py-3 flex items-center justify-between gap-2" data-link-id="${link.id}">
+          <!-- Left: URLs -->
+          <div class="flex flex-col min-w-0 flex-1 pr-1">
+            <span class="text-xs font-semibold text-brand-base truncate hover:underline cursor-pointer" onclick="simulateRedirect('${link.shortUrl}')">
+              ${link.shortUrl}
+            </span>
+            <span class="text-[11px] text-neutral-400 truncate mt-0.5">
+              ${link.originalUrl}
+            </span>
+          </div>
+
+          <!-- Right: Clicks Counter and Action Buttons -->
+          <div class="flex items-center gap-2.5 flex-shrink-0">
+            <span class="text-[11px] text-neutral-400 whitespace-nowrap">
+              ${link.clicks} acessos
+            </span>
+
+            <!-- Copy Button -->
+            <button 
+              type="button" 
+              onclick="copyToClipboard('${link.shortUrl}')"
+              class="w-8 h-8 rounded-lg bg-neutral-100 hover:bg-neutral-200/80 text-neutral-500 hover:text-neutral-600 flex items-center justify-center transition-colors"
+              title="Copiar link"
+              data-purpose="copy-button"
+            >
+              <svg class="w-4 h-4" viewBox="0 0 256 256" fill="currentColor">
+                <path d="M216,32H88a8,8,0,0,0-8,8V80H40a8,8,0,0,0-8,8V216a8,8,0,0,0,8,8H168a8,8,0,0,0,8-8V176h40a8,8,0,0,0,8-8V40A8,8,0,0,0,216,32ZM160,208H48V96H160Zm48-48H176V88a8,8,0,0,0-8-8H96V48H208Z"/>
+              </svg>
+            </button>
+
+            <!-- Delete Button -->
+            <button 
+              type="button" 
+              onclick="deleteLink('${link.id}')"
+              class="w-8 h-8 rounded-lg bg-neutral-100 hover:bg-neutral-200/80 text-neutral-500 hover:text-danger flex items-center justify-center transition-colors"
+              title="Excluir link"
+              data-purpose="delete-button"
+            >
+              <svg class="w-4 h-4" viewBox="0 0 256 256" fill="currentColor">
+                <path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192ZM112,104v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Add new link handler
+    function handleCreateLink(e) {
+      e.preventDefault();
+      const origInput = document.getElementById('input-original-url');
+      const shortInput = document.getElementById('input-short-url');
+
+      const originalVal = origInput.value.trim();
+      let shortVal = shortInput.value.trim();
+
+      if (!originalVal) return;
+
+      if (!shortVal || shortVal === 'brev.ly/' || shortVal === 'brev.ly') {
+        shortVal = 'brev.ly/' + Math.random().toString(36).substring(2, 8);
+      } else if (!shortVal.startsWith('brev.ly/')) {
+        shortVal = 'brev.ly/' + shortVal.replace(/^\/+/, '');
+      }
+
+      // Truncate preview for original URL if long
+      let displayOriginal = originalVal;
+      if (displayOriginal.length > 25) {
+        displayOriginal = displayOriginal.substring(0, 24) + '...';
+      }
+
+      const newLinkObj = {
+        id: Date.now().toString(),
+        shortUrl: shortVal,
+        originalUrl: displayOriginal,
+        clicks: 0
+      };
+
+      currentLinks.unshift(newLinkObj);
+      renderList();
+
+      // Reset fields
+      origInput.value = '';
+      shortInput.value = 'brev.ly/';
+      showToast('Link encurtado salvo!');
+    }
+
+    // Delete link
+    function deleteLink(id) {
+      currentLinks = currentLinks.filter(item => item.id !== id);
+      renderList();
+      showToast('Link removido.');
+    }
+
+    // Copy to clipboard
+    function copyToClipboard(text) {
+      navigator.clipboard?.writeText ? navigator.clipboard.writeText(text) : null;
+      showToast('Copiado para a área de transferência!');
+    }
+
+    // Export CSV simulated
+    function handleDownloadCSV() {
+      if (currentLinks.length === 0) {
+        showToast('Nenhum link para exportar.');
+        return;
+      }
+      let csvContent = "data:text/csv;charset=utf-8,ID,Link Encurtado,Link Original,Acessos\n";
+      currentLinks.forEach(l => {
+        csvContent += `"${l.id}","${l.shortUrl}","${l.originalUrl}",${l.clicks}\n`;
+      });
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", "meus_links_brevly.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast('Download do CSV iniciado!');
+    }
+
+    // Toast messenger
+    let toastTimeout;
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toast-message');
+      toastMsg.innerText = msg;
+      toast.classList.remove('opacity-0', 'pointer-events-none');
+      toast.classList.add('opacity-100');
+
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('opacity-100');
+        toast.classList.add('opacity-0', 'pointer-events-none');
+      }, 2200);
+    }
+
+    // Simulated click on shortened link redirects to redirect screen
+    function simulateRedirect(url) {
+      switchView('redirect');
+    }
+
+    // Switch between snapshot states: 'links', 'empty', 'redirect', '404'
+    function switchView(viewName) {
+      currentActiveView = viewName;
+      const mainView = document.getElementById('main-screens-view');
+      const redirectView = document.getElementById('screen-redirect');
+      const notFoundView = document.getElementById('screen-404');
+      
+      const btnLinks = document.getElementById('btn-state-links');
+      const btnEmpty = document.getElementById('btn-state-empty');
+      const btnRedirect = document.getElementById('btn-state-redirect');
+      const btn404 = document.getElementById('btn-state-404');
+
+      // Reset switcher button styles
+      [btnLinks, btnEmpty, btnRedirect, btn404].forEach(btn => {
+        btn.className = "px-2.5 py-1 rounded-full hover:bg-neutral-200/70 text-neutral-600 transition-colors";
+      });
+
+      // Hide all major screens
+      mainView.classList.add('hidden');
+      redirectView.classList.add('hidden');
+      redirectView.classList.remove('flex');
+      notFoundView.classList.add('hidden');
+      notFoundView.classList.remove('flex');
+
+      if (viewName === 'links') {
+        currentLinks = [...initialLinks];
+        renderList();
+        mainView.classList.remove('hidden');
+        btnLinks.className = "px-2.5 py-1 rounded-full bg-brand-base text-white transition-colors";
+      } else if (viewName === 'empty') {
+        currentLinks = [];
+        renderList();
+        mainView.classList.remove('hidden');
+        btnEmpty.className = "px-2.5 py-1 rounded-full bg-brand-base text-white transition-colors";
+      } else if (viewName === 'redirect') {
+        redirectView.classList.remove('hidden');
+        redirectView.classList.add('flex');
+        btnRedirect.className = "px-2.5 py-1 rounded-full bg-brand-base text-white transition-colors";
+      } else if (viewName === '404') {
+        notFoundView.classList.remove('hidden');
+        notFoundView.classList.add('flex');
+        btn404.className = "px-2.5 py-1 rounded-full bg-brand-base text-white transition-colors";
+      }
+    }
+
+    // Initial render
+    document.addEventListener('DOMContentLoaded', () => {
+      renderList();
+    });
+  </script>
+</body></html>

@@ -1,0 +1,37 @@
+# Dependências e Caches
+node_modules/
+.pnpm-store/
+.vite/
+coverage/
+
+# Builds e Distribuição
+dist/
+build/
+.output/
+
+# Logs e Dados Locais
+*.log
+server/logs/*.log
+!server/logs/.gitkeep
+
+# Variáveis de Ambiente (Segredos e Configurações Reais)
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# IDEs, Editores e Arquivos do Sistema Operacional
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Arquivos de Agentes de IA e Documentação Operacional de IA
+AGENTS.md
+CLAUDE.md
+.gemini/
+docs/PLANO.md
+docs/STATUS.md
+docs/ERROS.md
