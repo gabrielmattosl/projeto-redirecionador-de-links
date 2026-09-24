@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { SpinnerGap } from '@phosphor-icons/react';
 import { incrementLink } from '@/http/links';
@@ -7,6 +7,7 @@ export function Redirect() {
   const { 'url-encurtada': shortUrl } = useParams();
   const navigate = useNavigate();
   const [isError, setIsError] = useState(false);
+  const hasRequestedRef = useRef(false);
 
   useEffect(() => {
     if (!shortUrl) {
@@ -14,26 +15,24 @@ export function Redirect() {
       return;
     }
 
-    let isMounted = true;
+    // Previne execuções duplicadas causadas por montagens repetidas ou React.StrictMode em modo de desenvolvimento
+    if (hasRequestedRef.current) {
+      return;
+    }
+    hasRequestedRef.current = true;
 
     incrementLink(shortUrl)
       .then((data) => {
-        if (isMounted && data?.original_url) {
+        if (data?.original_url) {
           // Executa o redirecionamento imediato para a URL original
           window.location.href = data.original_url;
-        } else if (isMounted) {
+        } else {
           setIsError(true);
         }
       })
       .catch(() => {
-        if (isMounted) {
-          setIsError(true);
-        }
+        setIsError(true);
       });
-
-    return () => {
-      isMounted = false;
-    };
   }, [shortUrl]);
 
   if (isError) {
