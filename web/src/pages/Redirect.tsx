@@ -1,21 +1,21 @@
 import { useEffect, useRef, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { SpinnerGap } from '@phosphor-icons/react';
 import { incrementLink } from '@/http/links';
+import { NotFound } from '@/pages/NotFound';
 
 export function Redirect() {
   const { 'url-encurtada': shortUrl } = useParams();
-  const navigate = useNavigate();
   const [isError, setIsError] = useState(false);
   const hasRequestedRef = useRef(false);
 
   useEffect(() => {
-    if (!shortUrl) {
+    if (!shortUrl || shortUrl === '404') {
       setIsError(true);
       return;
     }
 
-    // Previne execuções duplicadas causadas por montagens repetidas ou React.StrictMode em modo de desenvolvimento
+    // Previne execuções duplicadas causadas por React.StrictMode em modo de desenvolvimento
     if (hasRequestedRef.current) {
       return;
     }
@@ -36,8 +36,7 @@ export function Redirect() {
   }, [shortUrl]);
 
   if (isError) {
-    navigate('/404', { replace: true });
-    return null;
+    return <NotFound />;
   }
 
   return (
