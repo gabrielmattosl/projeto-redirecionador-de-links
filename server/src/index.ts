@@ -1,4 +1,4 @@
-import Fastify from 'fastify';
+import Fastify, { FastifyError } from 'fastify';
 import cors from '@fastify/cors';
 import swagger from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
@@ -31,7 +31,7 @@ export async function buildApp() {
 
   await app.register(linksRoutes);
 
-  app.setErrorHandler((error, _request, reply) => {
+  app.setErrorHandler((error: FastifyError, _request, reply) => {
     logErrorToFile('UnhandledException', error);
     
     if (error.statusCode) {
