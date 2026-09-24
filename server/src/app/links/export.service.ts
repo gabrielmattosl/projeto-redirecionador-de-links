@@ -21,14 +21,15 @@ export async function exportLinksToCsv(): Promise<{ url: string; filename: strin
       .from(links)
       .orderBy(asc(links.createdAt));
 
-    let csvContent = 'URL Original,URL Encurtada,Data de Criacao,Acessos Totais\n';
+    let csvContent = 'ID,Original URL,Short URL,Access Count,Created at\n';
 
     for (const link of allLinks) {
+      const id = escapeCsvField(link.id);
       const originalUrl = escapeCsvField(link.originalUrl);
       const shortUrl = escapeCsvField(link.shortUrl);
-      const createdAt = escapeCsvField(link.createdAt.toISOString());
       const clicks = escapeCsvField(link.clicks);
-      csvContent += `${originalUrl},${shortUrl},${createdAt},${clicks}\n`;
+      const createdAt = escapeCsvField(link.createdAt.toISOString());
+      csvContent += `${id},${originalUrl},${shortUrl},${clicks},${createdAt}\n`;
     }
 
     const uuid = crypto.randomUUID();

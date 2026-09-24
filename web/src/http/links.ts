@@ -90,9 +90,6 @@ export async function incrementLink(shortUrl: string): Promise<{ original_url: s
 export async function exportLinks(): Promise<ExportLinksResponse> {
   const response = await fetch(`${API_BASE_URL}/links/export`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
   });
 
   return handleResponse<ExportLinksResponse>(response);
