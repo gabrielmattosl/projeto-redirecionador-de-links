@@ -20,7 +20,18 @@ export default {
       fontFamily: {
         sans: ['"Open Sans"', 'sans-serif'],
       },
+      borderRadius: {
+        sm: '0.125rem',
+        DEFAULT: '0.25rem',
+        md: '0.375rem',
+        lg: '0.5rem',
+        xl: '0.75rem',
+        full: '9999px',
+      },
+      boxShadow: {
+        ambient: '0 4px 16px rgba(31, 32, 37, 0.06)',
+      },
     },
   },
   plugins: [],
-}
+};

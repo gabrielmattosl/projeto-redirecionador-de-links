@@ -12,5 +12,12 @@
     margin: 0;
     padding: 0;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Estilização para estados de foco seguindo DESIGN.md (ring de 1.5px solid #2C46B1) */
+  *:focus-visible {
+    outline: 1.5px solid #2C46B1;
+    outline-offset: 1px;
   }
 }
