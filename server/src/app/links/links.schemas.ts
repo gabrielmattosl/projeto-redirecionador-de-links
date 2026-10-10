@@ -16,7 +16,7 @@ export const createLinkSchema = z.object({
         .refine((val) => {
           try {
             const urlObj = new URL(val);
-            return urlObj.hostname.includes('.') || urlObj.hostname === 'localhost';
+            return urlObj.hostname === 'localhost' || /^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(urlObj.hostname);
           } catch {
             return false;
           }
