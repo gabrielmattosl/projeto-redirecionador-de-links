@@ -242,21 +242,25 @@ Em estrita conformidade com o `DESIGN.md`:
 ### Detalhamento das Telas e Componentes
 
 #### 1. Página Principal (`/`)
+* **Layout Principal:** A página adota um layout lado a lado (`flex-col lg:flex-row`), com o formulário à esquerda e a listagem de links à direita no desktop.
+* **Cabeçalho Global:**
+  * Exibe o logotipo da aplicação (texto em azul acompanhado de ícone de link) flutuando sobre o fundo, sem cor de fundo ou bordas. O fundo da aplicação é um cinza claro (`#EEF2F6`).
 * **Formulário de Cadastro:**
-  * Campo de URL Original: input de altura 40px com label superior "URL ORIGINAL" em 10px uppercase `#74798B`.
-  * Campo de Apelido: input de altura 40px com label superior "APELIDO PERSONALIZADO" em 10px uppercase `#74798B`.
-  * Botão de Salvar: botão primário (`#2C46B1`), texto branco, altura 40px, cantos arredondados de 4px (`rounded`).
-  * Tratamento de Erro: borda do campo com erro muda para `#B12C4D`, exibindo texto explicativo em 12px e ícone Phosphor `WarningCircle` (12px) 4px abaixo do campo.
-* **Cabeçalho da Listagem:**
-  * Exibe o logotipo da aplicação (`logo.png`), o totalizador de links cadastrados e o botão secundário "Exportar CSV" (com ícone `DownloadSimple`).
+  * Inserido dentro de um Card branco (com cantos arredondados `rounded-xl`).
+  * Possui título "Novo link" inserido no próprio Card.
+  * Campo de URL Original: input de altura 40px com label superior "LINK ORIGINAL" em 10px uppercase.
+  * Campo de Apelido: input de altura 40px com label superior "LINK ENCURTADO" em 10px uppercase.
+  * Botão de Salvar: botão primário com texto "Salvar link", largura total (`w-full`), cantos arredondados de 6px (`rounded-md`).
+  * Tratamento de Erro: borda do campo com erro muda para `#B12C4D`.
 * **Listagem com Rolagem Infinita:**
-  * **Empty State:** Caso a base não possua registros, renderiza um componente centralizado com mensagem amigável convidando o usuário a cadastrar seu primeiro link.
-  * **Composição do Card de Link:**
-    * Fundo branco (`#FFFFFF`), borda de 1px em `#E4E6EC`, cantos arredondados de 8px (`rounded-md`), padding interno de 16px.
-    * Lado esquerdo: apelido (`short_url`) em destaque com cor `#2C46B1` (SemiBold), acompanhado da URL original em `#74798B` (Regular 12px) com truncamento elíptico se extensa.
+  * **Card de Listagem:** A listagem inteira é renderizada dentro de um Card branco. O cabeçalho deste card possui o título "Meus links" e o botão secundário "Baixar CSV" alinhado à direita. O rodapé do card exibe o totalizador "X links encurtados".
+  * **Empty State:** Caso a base não possua registros, renderiza um componente centralizado com o ícone de link e a mensagem em caixa alta "AINDA NÃO EXISTEM LINKS CADASTRADOS".
+  * **Composição do Card de Link Individual:**
+    * Fundo branco com borda inferior sutil para separação dos itens. Efeito de hover cinza-claro.
+    * Lado esquerdo: apelido (`short_url`) afixado com o prefixo `brev.ly/` em destaque com cor `#2C46B1` (SemiBold), acompanhado da URL original em `#74798B` (Regular 12px) sem o esquema `https://`.
     * Lado direito: contador de cliques com tratamento condicional estrito de concordância ("0 acesso", "1 acesso", "2 acessos"), seguido obrigatoriamente nesta exata ordem visual da esquerda para a direita por:
-      1. Botão de Cópia (Icon Button 32x32px com ícone Phosphor `Copy`);
-      2. Botão de Exclusão (Icon Button 32x32px com ícone Phosphor `Trash`).
+      1. Botão de Cópia (Icon Button com fundo cinza-claro, ícone Phosphor `Copy`);
+      2. Botão de Exclusão (Icon Button com fundo cinza-claro, ícone Phosphor `Trash`).
     * **Aviso Mandatório:** O botão "Download QR" do `DESIGN.md` foi descartado e não deve existir no card.
 * **Requisitos Obrigatórios de UX:**
   * **Loadings e Spinners:** Indicador visual de carregamento durante a busca inicial de dados, na busca de novas páginas pela rolagem infinita e durante o processamento de ações assíncronas.

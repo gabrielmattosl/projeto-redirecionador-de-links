@@ -59,41 +59,43 @@ export function CreateLinkForm({ onSubmit, isLoading = false, serverError }: Cre
   return (
     <form
       onSubmit={handleSubmit(handleFormSubmit)}
-      className="bg-white p-6 rounded-lg border border-gray-200 flex flex-col gap-4 w-full shadow-sm"
+      className="bg-white p-6 rounded-xl flex flex-col gap-5 w-full shadow-sm"
     >
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <h2 className="text-xl font-bold text-gray-600 mb-1">Novo link</h2>
+
+      <div className="flex flex-col gap-4">
         <Input
-          label="URL ORIGINAL"
-          placeholder="https://exemplo.com"
+          label="LINK ORIGINAL"
+          placeholder="www.exemplo.com.br"
           disabled={isLoading}
           error={errors.original_url?.message}
           {...register('original_url')}
         />
 
         <Input
-          label="APELIDO PERSONALIZADO"
-          placeholder="meu-link"
+          label="LINK ENCURTADO"
+          placeholder="brev.ly/"
           disabled={isLoading}
           error={errors.short_url?.message || serverError || undefined}
           {...register('short_url')}
         />
       </div>
 
-      <div className="flex justify-end mt-2">
+      <div className="mt-2">
         <Button
           type="submit"
           variant="primary"
           disabled={isLoading}
           isLoading={isLoading}
-          className="w-full md:w-auto min-w-[120px]"
+          className="w-full h-10 rounded-md"
         >
           {isLoading ? (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center justify-center gap-2">
               <SpinnerGap size={16} className="animate-spin text-white" />
               <span>Salvando...</span>
             </div>
           ) : (
-            'Salvar'
+            'Salvar link'
           )}
         </Button>
       </div>

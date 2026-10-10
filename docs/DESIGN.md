@@ -199,5 +199,5 @@ The design system employs clean, subtle corner radiuses (Soft / `roundedness: 1`
   - **Error:** Border 1px solid `danger` (`#B12C4D`), text `gray-600`. Accompanied by Phosphor `WarningCircle` icon (12px) and error text (Text Sm, 12px, color `#B12C4D`) placed 4px beneath the field.
 
 ### Cards & Link Containers
-- White background (`#FFFFFF`), 1px solid `gray-200` border, 8px border-radius, padding 16px.
-- Displays shortened URL with `blue-base` text color and bold weight, coupled with destination URL in `gray-400` text. Actions (Copy, Download QR, Delete) align right using Icon Button variants.
+- **Main Layout Panels:** White background (`#FFFFFF`), no outer border just ambient shadow (`shadow-sm`), 12px border-radius (`rounded-xl`), padding 24px (`p-6`). The interface splits into a side-by-side view on desktop.
+- **Link Items:** No surrounding box, just a subtle bottom border (`border-b border-gray-100`) separating items. Displays shortened URL prefixed with `brev.ly/` with `blue-base` text color and bold weight, coupled with destination URL in `gray-400` text. Actions (Copy, Delete) align right using Icon Button variants with a light gray resting background.

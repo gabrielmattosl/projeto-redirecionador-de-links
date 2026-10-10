@@ -111,17 +111,13 @@ export function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center pb-12">
-      {/* Header com Logo e Ação de Exportação CSV */}
-      <Header
-        onExportCsv={handleExportCsv}
-        isExporting={exportMutation.isPending}
-      />
+    <div className="min-h-screen bg-[#EEF2F6] flex flex-col items-center pb-12">
+      {/* Header com Logo */}
+      <Header />
 
-      <main className="w-full max-w-[1200px] px-4 py-8 flex flex-col gap-8">
+      <main className="w-full max-w-[1200px] px-4 py-8 flex flex-col lg:flex-row lg:items-start gap-8">
         {/* Seção 1: Formulário de Cadastro de Link */}
-        <section className="flex flex-col gap-2">
-          <h2 className="text-lg font-bold text-gray-600">Novo Link</h2>
+        <section className="w-full lg:w-[400px] shrink-0">
           <CreateLinkForm
             onSubmit={handleCreateLink}
             isLoading={createMutation.isPending}
@@ -130,16 +126,7 @@ export function Home() {
         </section>
 
         {/* Seção 2: Listagem de Links */}
-        <section className="flex flex-col gap-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-bold text-gray-600">Meus Links</h2>
-            {links.length > 0 && (
-              <span className="text-xs text-gray-400 font-normal">
-                Total: {links.length}
-              </span>
-            )}
-          </div>
-
+        <section className="flex-1 w-full min-w-0">
           <LinkList
             links={links}
             isLoading={isLoading}
@@ -149,6 +136,8 @@ export function Home() {
             onCopy={handleCopyLink}
             onDelete={handleOpenDeleteModal}
             deletingShortUrl={deleteMutation.isPending ? targetLinkToDelete?.short_url : null}
+            onExportCsv={handleExportCsv}
+            isExporting={exportMutation.isPending}
           />
         </section>
       </main>
