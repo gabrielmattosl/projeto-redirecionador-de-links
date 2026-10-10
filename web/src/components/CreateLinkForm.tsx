@@ -11,7 +11,18 @@ const createLinkSchema = z.object({
     .string()
     .min(1, 'A URL original é obrigatória.')
     .transform((val) => normalizeUrl(val))
-    .pipe(z.string().url('Informe uma URL válida.')),
+    .pipe(
+      z.string()
+        .url('Informe uma URL válida.')
+        .refine((val) => {
+          try {
+            const urlObj = new URL(val);
+            return urlObj.hostname.includes('.') || urlObj.hostname === 'localhost';
+          } catch {
+            return false;
+          }
+        }, { message: 'Informe uma URL válida com um domínio correto.' })
+    ),
   short_url: z
     .string()
     .min(3, 'O apelido deve ter no mínimo 3 caracteres.')
