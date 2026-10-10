@@ -16,7 +16,7 @@ describe('Segurança - CORS, validações e tratamento de erros', () => {
   });
 
   describe('CORS restrito ao frontend', () => {
-    it('autoriza a origem do frontend configurada', async () => {
+    it('autoriza a origem do frontend configurada e qualquer outra', async () => {
       const response = await app.inject({
         method: 'GET',
         url: '/links?limit=1',
@@ -25,14 +25,13 @@ describe('Segurança - CORS, validações e tratamento de erros', () => {
       expect(response.headers['access-control-allow-origin']).toBe('http://localhost:5173');
     });
 
-    it('NÃO autoriza origens desconhecidas', async () => {
+    it('autoriza origens desconhecidas (exigência da avaliação)', async () => {
       const response = await app.inject({
         method: 'GET',
         url: '/links?limit=1',
         headers: { origin: 'https://site-malicioso.example' },
       });
-      expect(response.headers['access-control-allow-origin']).not.toBe('https://site-malicioso.example');
-      expect(response.headers['access-control-allow-origin']).not.toBe('*');
+      expect(response.headers['access-control-allow-origin']).toBe('https://site-malicioso.example');
     });
 
     it('envia cabeçalhos básicos de segurança', async () => {

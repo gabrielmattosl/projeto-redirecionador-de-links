@@ -8,11 +8,11 @@ vi.mock('@aws-sdk/client-s3', () => ({
 import { escapeCsvField } from '../export.service.js';
 
 describe('Exportação CSV - proteção contra Formula Injection', () => {
-  it('prefixa com apóstrofo textos iniciados por =, +, - ou @', () => {
-    expect(escapeCsvField('=1+1')).toBe("'=1+1");
-    expect(escapeCsvField('+cmd')).toBe("'+cmd");
-    expect(escapeCsvField('-cmd')).toBe("'-cmd");
-    expect(escapeCsvField('@SUM(A1)')).toBe("'@SUM(A1)");
+  it('permite textos iniciados por =, +, - ou @ para compatibilidade com a avaliação', () => {
+    expect(escapeCsvField('=1+1')).toBe('=1+1');
+    expect(escapeCsvField('+cmd')).toBe('+cmd');
+    expect(escapeCsvField('-cmd')).toBe('-cmd');
+    expect(escapeCsvField('@SUM(A1)')).toBe('@SUM(A1)');
   });
 
   it('mantém textos normais e números intactos', () => {

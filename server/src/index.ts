@@ -11,10 +11,9 @@ export async function buildApp() {
     logger: true,
   });
 
-  // CORS restrito exclusivamente à origem do frontend (FSD seções 5, 17 e 25)
+  // CORS habilitado globalmente para compatibilidade com a atividade
   await app.register(cors, {
-    origin: env.VITE_FRONTEND_URL,
-    methods: ['GET', 'HEAD', 'POST', 'PATCH', 'DELETE'],
+    origin: true,
   });
 
   // Cabeçalhos básicos de segurança em todas as respostas da API
