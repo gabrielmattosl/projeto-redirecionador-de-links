@@ -2,6 +2,7 @@ import { Copy, Trash } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/Button';
 import { Link } from '@/types/link';
 import { formatClickCount, getFullShortUrl } from '@/utils/formatters';
+import { toSafeHttpUrl } from '@/utils/safeUrl';
 
 export interface LinkCardProps {
   link: Link;
@@ -29,7 +30,7 @@ export function LinkCard({ link, onCopy, onDelete, isDeleting = false }: LinkCar
           brev.ly/{link.short_url}
         </span>
         <a
-          href={link.original_url}
+          href={toSafeHttpUrl(link.original_url)}
           target="_blank"
           rel="noopener noreferrer"
           className="text-xs text-gray-400 font-normal truncate hover:underline"

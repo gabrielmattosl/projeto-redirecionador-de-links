@@ -12,6 +12,7 @@ export const createLinkSchema = z.object({
     })
     .pipe(
       z.string()
+        .max(2048, 'A URL deve ter no máximo 2048 caracteres.')
         .url('Informe uma URL válida.')
         .refine((val) => {
           try {
@@ -34,9 +35,17 @@ export const createLinkSchema = z.object({
 
 export type CreateLinkInput = z.infer<typeof createLinkSchema>;
 
+export const MAX_LINKS_PAGE_SIZE = 100;
+
 export const getLinksQuerySchema = z.object({
-  cursor: z.string().optional(),
-  limit: z.coerce.number().int().positive().default(20).optional(),
+  cursor: z.string().datetime({ offset: true, message: 'Cursor inválido.' }).optional(),
+  limit: z.coerce
+    .number()
+    .int()
+    .positive()
+    .max(MAX_LINKS_PAGE_SIZE, `O limite máximo por página é ${MAX_LINKS_PAGE_SIZE}.`)
+    .default(20)
+    .optional(),
 });
 
 export type GetLinksQuery = z.infer<typeof getLinksQuerySchema>;

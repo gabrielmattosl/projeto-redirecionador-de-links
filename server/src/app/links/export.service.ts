@@ -6,9 +6,14 @@ import { links } from '../../../database/schema.js';
 import { env } from '../../config/env.js';
 import { logErrorToFile } from '../../utils/logger.js';
 
-function escapeCsvField(value: string | number): string {
-  const str = String(value);
-  if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+export function escapeCsvField(value: string | number): string {
+  let str = String(value);
+  // Proteção contra CSV/Formula Injection: valores iniciados por =, +, - ou @ (ou controle)
+  // poderiam ser executados como fórmula ao abrir o relatório no Excel/Google Sheets.
+  if (typeof value === 'string' && /^[=+\-@\t\r]/.test(str)) {
+    str = `'${str}`;
+  }
+  if (str.includes(',') || str.includes('"') || str.includes('\n') || str.includes('\r')) {
     return `"${str.replace(/"/g, '""')}"`;
   }
   return str;

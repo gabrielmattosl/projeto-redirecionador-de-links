@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { SpinnerGap } from '@phosphor-icons/react';
 import { incrementLink } from '@/http/links';
 import { NotFound } from '@/pages/NotFound';
+import { isSafeHttpUrl } from '@/utils/safeUrl';
 
 export function Redirect() {
   const { 'url-encurtada': shortUrl } = useParams();
@@ -23,8 +24,8 @@ export function Redirect() {
 
     incrementLink(shortUrl)
       .then((data) => {
-        if (data?.original_url) {
-          // Executa o redirecionamento imediato para a URL original
+        if (isSafeHttpUrl(data?.original_url)) {
+          // Executa o redirecionamento imediato para a URL original (apenas http/https)
           window.location.href = data.original_url;
         } else {
           setIsError(true);

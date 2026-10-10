@@ -10,6 +10,12 @@ if (typeof process.loadEnvFile === 'function') {
 
 const envSchema = z.object({
   PORT: z.coerce.number().default(3333),
+  // Única origem autorizada a consumir a API via navegador (CORS). Conforme FSD seção 17.
+  VITE_FRONTEND_URL: z
+    .string()
+    .url('VITE_FRONTEND_URL deve ser uma URL válida.')
+    .default('http://localhost:5173')
+    .transform((val) => new URL(val).origin),
   DATABASE_URL: z.string().min(1, 'DATABASE_URL é obrigatória.'),
   CLOUDFLARE_ACCOUNT_ID: z.string().min(1, 'CLOUDFLARE_ACCOUNT_ID é obrigatória.'),
   CLOUDFLARE_ACCESS_KEY_ID: z.string().min(1, 'CLOUDFLARE_ACCESS_KEY_ID é obrigatória.'),

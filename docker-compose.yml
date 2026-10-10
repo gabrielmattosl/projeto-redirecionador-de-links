@@ -10,7 +10,7 @@ services:
       POSTGRES_PASSWORD: postgrespassword
       POSTGRES_DB: redirecionador_db
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -30,6 +30,7 @@ services:
     environment:
       PORT: 3333
       DATABASE_URL: postgresql://postgres:postgrespassword@postgres:5432/redirecionador_db
+      VITE_FRONTEND_URL: http://localhost:5173
     env_file:
       - ./server/.env
     depends_on:

@@ -11,8 +11,16 @@ export async function buildApp() {
     logger: true,
   });
 
+  // CORS restrito exclusivamente à origem do frontend (FSD seções 5, 17 e 25)
   await app.register(cors, {
-    origin: true,
+    origin: env.VITE_FRONTEND_URL,
+    methods: ['GET', 'HEAD', 'POST', 'PATCH', 'DELETE'],
+  });
+
+  // Cabeçalhos básicos de segurança em todas as respostas da API
+  app.addHook('onSend', async (_request, reply) => {
+    reply.header('X-Content-Type-Options', 'nosniff');
+    reply.header('Referrer-Policy', 'no-referrer');
   });
 
   await app.register(swagger, {
@@ -31,14 +39,20 @@ export async function buildApp() {
 
   await app.register(linksRoutes);
 
-  app.setErrorHandler((error: FastifyError, _request, reply) => {
-    logErrorToFile('UnhandledException', error);
-    
-    if (error.statusCode) {
-      return reply.status(error.statusCode).send({
+  app.setErrorHandler((error: FastifyError, request, reply) => {
+    const statusCode = error.statusCode ?? 500;
+
+    // Erros do cliente (4xx) são esperados: mensagem simples, sem gravar no log físico
+    // (evita que requisições inválidas em massa encham o disco).
+    if (statusCode >= 400 && statusCode < 500) {
+      return reply.status(statusCode).send({
         error: error.message,
       });
     }
+
+    // Erros de servidor (5xx): detalhes técnicos apenas no log protegido, nunca para o usuário.
+    request.log.error(error);
+    logErrorToFile('UnhandledException', error);
 
     return reply.status(500).send({
       error: 'Erro interno do servidor.',

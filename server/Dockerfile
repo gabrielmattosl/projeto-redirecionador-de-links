@@ -15,9 +15,15 @@ WORKDIR /app
 ENV NODE_ENV=production
 
 COPY package*.json ./
-RUN npm ci --only=production
+RUN npm ci --omit=dev
 
 COPY --from=builder /app/dist ./dist
+
+# Pasta de logs de contingência gravável pelo usuário sem privilégios
+RUN mkdir -p /app/logs && chown -R node:node /app/logs
+
+# Segurança: a API não deve rodar como root dentro do container
+USER node
 
 EXPOSE 3333
 

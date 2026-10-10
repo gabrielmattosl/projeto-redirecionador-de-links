@@ -18,6 +18,11 @@ export interface FormattedLink {
   created_at: string;
 }
 
+function isUniqueViolation(error: unknown): boolean {
+  const candidate = error as { code?: string; cause?: { code?: string } } | null;
+  return candidate?.code === '23505' || candidate?.cause?.code === '23505';
+}
+
 export async function createLink(input: CreateLinkInput): Promise<FormattedLink> {
   const existing = await db
     .select({ id: links.id })
@@ -29,13 +34,22 @@ export async function createLink(input: CreateLinkInput): Promise<FormattedLink>
     throw new LinkAlreadyExistsError();
   }
 
-  const [inserted] = await db
-    .insert(links)
-    .values({
-      originalUrl: input.original_url,
-      shortUrl: input.short_url,
-    })
-    .returning();
+  let inserted: typeof links.$inferSelect;
+  try {
+    [inserted] = await db
+      .insert(links)
+      .values({
+        originalUrl: input.original_url,
+        shortUrl: input.short_url,
+      })
+      .returning();
+  } catch (error) {
+    // Condição de corrida: outro pedido criou o mesmo apelido entre a checagem e o insert
+    if (isUniqueViolation(error)) {
+      throw new LinkAlreadyExistsError();
+    }
+    throw error;
+  }
 
   return {
     id: inserted.id,

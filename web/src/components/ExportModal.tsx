@@ -1,5 +1,6 @@
 import { DownloadSimple, CheckCircle } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/Button';
+import { isSafeHttpUrl } from '@/utils/safeUrl';
 
 export interface ExportModalProps {
   isOpen: boolean;
@@ -11,8 +12,8 @@ export function ExportModal({ isOpen, exportData, onClose }: ExportModalProps) {
   if (!isOpen || !exportData) return null;
 
   const handleDownloadNow = () => {
-    if (exportData.url) {
-      window.open(exportData.url, '_blank');
+    if (isSafeHttpUrl(exportData.url)) {
+      window.open(exportData.url, '_blank', 'noopener,noreferrer');
     }
   };
 
